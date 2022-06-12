@@ -14,11 +14,15 @@ variable "user" {}
 variable "fingerprint" {}
 variable "key_file" {}
 variable "region" {}
-variable "comaprtment_id" {}
+variable "compartment_id" {}
 variable "env_prefix" {
-  default="production"
+  default="development"
 }
 variable "vcn_cidr_block" {}
+variable "subnet_cidr_block" {}
+
+
+
 
 provider "oci" {
    tenancy_ocid = var.tenancy
@@ -37,5 +41,18 @@ resource "oci_core_vcn" "my-vcn" {
     #Optional
     cidr_block = var.vcn_cidr_block
     display_name = "${var.env_prefix}-vcn"
+
+}
+
+# subnet
+
+resource "oci_core_subnet" "subnet-1" {
+    #Required
+    cidr_block = var.subnet_cidr_block
+    compartment_id = var.compartment_id
+    vcn_id = oci_core_vcn.my-vcn.id
+
+    #Optional
+    display_name = "${var.env_prefix}-subnet-1"
 
 }
