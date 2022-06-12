@@ -9,3 +9,4 @@ variable "env_prefix" {
 }
 variable "vcn_cidr_block" {}
 variable "subnet_cidr_block" {}
+variable "internet_gateway_enabled" {}

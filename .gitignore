@@ -3,3 +3,4 @@
 .oci
 terraform.tfvars
 *.tfstate*
+*.bkp

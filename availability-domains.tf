@@ -1,3 +1,5 @@
+/* ------------- Example ------------ */
+
 # Source from https://registry.terraform.io/providers/hashicorp/oci/latest/docs/data-sources/identity_availability_domains
 
 # <tenancy-ocid> is the compartment OCID for the root compartment.
@@ -6,3 +8,5 @@
 data "oci_identity_availability_domains" "ads" {
   compartment_id = var.compartment_id
 }
+
+/* ---------------- . --------------- */
