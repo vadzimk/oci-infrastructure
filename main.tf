@@ -14,6 +14,11 @@ variable "user" {}
 variable "fingerprint" {}
 variable "key_file" {}
 variable "region" {}
+variable "comaprtment_id" {}
+variable "env_prefix" {
+  default="production"
+}
+variable "vcn_cidr_block" {}
 
 provider "oci" {
    tenancy_ocid = var.tenancy
@@ -23,9 +28,14 @@ provider "oci" {
    region = var.region
 }
 
-resource "oci_core_vcn" "example" {
-  dns_label = "example"
-  cidr_block="172.16.0.0/20"
-  compartment_id = "ocid1.compartment.oc1..aaaaaaaa5uclw46zflg3wi7ce3x2bpi4wkhrgntcmyqio3d5oayi2f7ftbtq"
-  display_name = "Example vcn"
+# virtual cloud network
+
+resource "oci_core_vcn" "my-vcn" {
+    #Required
+    compartment_id = var.compartment_id
+
+    #Optional
+    cidr_block = var.vcn_cidr_block
+    display_name = "${var.env_prefix}-vcn"
+
 }
