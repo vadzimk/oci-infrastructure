@@ -3,43 +3,43 @@
 terraform {
   required_providers {
     oci = {
-      source = "oracle/oci"
+      source  = "oracle/oci"
       version = "4.79.0"
     }
   }
 }
 
 provider "oci" {
-   tenancy_ocid = var.tenancy
-   user_ocid = var.user
-   fingerprint = var.fingerprint
-   private_key_path = var.key_file
-   region = var.region
+  tenancy_ocid     = var.tenancy
+  user_ocid        = var.user
+  fingerprint      = var.fingerprint
+  private_key_path = var.key_file
+  region           = var.region
 }
 
 # virtual cloud network
 
 resource "oci_core_vcn" "my-vcn" {
-    #Required
-    compartment_id = var.compartment_id
+  #Required
+  compartment_id = var.compartment_id
 
-    #Optional
-    cidr_block = var.vcn_cidr_block
-    display_name = "${var.env_prefix}-vcn"
+  #Optional
+  cidr_block   = var.vcn_cidr_block
+  display_name = "${var.env_prefix}-vcn"
 
 }
 
 # subnet
 
 resource "oci_core_subnet" "subnet-1" {
-    #Required
-    cidr_block = var.subnet_cidr_block
-    compartment_id = var.compartment_id
-    vcn_id = oci_core_vcn.my-vcn.id
+  #Required
+  cidr_block     = var.subnet_cidr_block
+  compartment_id = var.compartment_id
+  vcn_id         = oci_core_vcn.my-vcn.id
 
-    #Optional
-    display_name = "${var.env_prefix}-subnet-1"
-    route_table_id = oci_core_route_table.my-vcn-rt.id 
+  #Optional
+  display_name   = "${var.env_prefix}-subnet-1"
+  route_table_id = oci_core_route_table.my-vcn-rt.id
 }
 
 # # duplicates the optional route_table_id parameter above
@@ -52,13 +52,13 @@ resource "oci_core_subnet" "subnet-1" {
 # internet gateway
 
 resource "oci_core_internet_gateway" "internet_gateway" {
-    #Required
-    compartment_id = var.compartment_id
-    vcn_id = oci_core_vcn.my-vcn.id
+  #Required
+  compartment_id = var.compartment_id
+  vcn_id         = oci_core_vcn.my-vcn.id
 
-    #Optional
-    enabled = var.internet_gateway_enabled #TODO check the default value
-    display_name = "${var.env_prefix}-my-vcn-ig"
+  #Optional
+  enabled      = var.internet_gateway_enabled #TODO check the default value
+  display_name = "${var.env_prefix}-my-vcn-ig"
 
 }
 
@@ -70,22 +70,122 @@ Each VCN automatically comes with a default route table that has no rules. If yo
 
 # new routing table
 resource "oci_core_route_table" "my-vcn-rt" {
+  #Required
+  compartment_id = var.compartment_id
+  vcn_id         = oci_core_vcn.my-vcn.id
+
+  #Optional
+
+  display_name = "${var.env_prefix}-my-vcn-rt"
+
+  route_rules {
     #Required
-    compartment_id = var.compartment_id
-    vcn_id = oci_core_vcn.my-vcn.id
+    network_entity_id = oci_core_internet_gateway.internet_gateway.id
 
     #Optional
-   
-    display_name = "${var.env_prefix}-my-vcn-rt"
-   
-    route_rules {
-        #Required
-        network_entity_id = oci_core_internet_gateway.internet_gateway.id
-
-        #Optional
-        description = "internet gateway"  
-        destination = "0.0.0.0/0" # required
-        destination_type = "CIDR_BLOCK"
-    }
+    description      = "internet gateway"
+    destination      = "0.0.0.0/0" # required
+    destination_type = "CIDR_BLOCK"
+  }
 }
 
+# Security group
+
+resource "oci_core_network_security_group" "vm1-NSG" {
+  #Required
+  compartment_id = var.compartment_id
+  vcn_id         = oci_core_vcn.my-vcn.id
+
+  #Optional
+  display_name = "${var.env_prefix}-SG"
+}
+
+# SSH
+
+resource "oci_core_network_security_group_security_rule" "ssh-rule" {
+  #Required
+  network_security_group_id = oci_core_network_security_group.vm1-NSG.id
+  direction                 = "INGRESS"
+  protocol                  = "6" # TCP protocol
+
+  #Optional
+  description = "Allow ssh"
+  # destination = var.network_security_group_security_rule_destination
+  # destination_type = var.network_security_group_security_rule_destination_type
+  # usually limited number ip adresses can access but i allow it from anywhere in case i travel
+  source      = "${var.myip}/32" # CIDR block consisting of just one address
+  source_type = "CIDR_BLOCK"
+  tcp_options {
+    #Optional
+    destination_port_range {
+      #Required
+      max = "22"
+      min = "22"
+    }
+    source_port_range {
+      #Required
+      max = "22"
+      min = "22"
+    }
+
+  }
+}
+
+# HTTP
+
+resource "oci_core_network_security_group_security_rule" "http-rule" {
+  #Required
+  network_security_group_id = oci_core_network_security_group.vm1-NSG.id
+  direction                 = "INGRESS"
+  protocol                  = "6" # TCP protocol
+
+  #Optional
+  description = "Allow http"
+  source      = "0.0.0.0/0" # all
+  source_type = "CIDR_BLOCK"
+  tcp_options {
+    #Optional
+    destination_port_range {
+      #Required
+      max = "8080"
+      min = "8080"
+    }
+  }
+}
+
+# HTTPS
+
+resource "oci_core_network_security_group_security_rule" "https-rule" {
+  #Required
+  network_security_group_id = oci_core_network_security_group.vm1-NSG.id
+  direction                 = "INGRESS"
+  protocol                  = "6" # TCP protocol
+
+  #Optional
+  description = "Allow https"
+  source      = "0.0.0.0/0" # all
+  source_type = "CIDR_BLOCK"
+  tcp_options {
+    #Optional
+    destination_port_range {
+      #Required
+      max = "443"
+      min = "443"
+    }
+  }
+}
+
+# Egress
+
+resource "oci_core_network_security_group_security_rule" "egress-rule" {
+  #Required
+  network_security_group_id = oci_core_network_security_group.vm1-NSG.id
+  direction                 = "EGRESS"
+  protocol                  = "all" # TCP protocol
+
+  #Optional
+  description      = "Allow egress"
+  destination      = "0.0.0.0/0"
+  destination_type = "CIDR_BLOCK"
+
+}
