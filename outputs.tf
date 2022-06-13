@@ -18,3 +18,8 @@ output "available-images" {
   value = local.image_name_id
   # value = data.oci_core_images.available_images.images
 }
+
+
+output "vm1-public-ip" {
+  value = oci_core_instance.vm1.public_ip
+}

@@ -192,7 +192,7 @@ resource "oci_core_network_security_group_security_rule" "egress-rule" {
 
 # Instance
 
-resource "oci_core_instance" "vm-1" {
+resource "oci_core_instance" "vm1" {
   # Required
   availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
   compartment_id      = var.compartment_id
@@ -203,7 +203,7 @@ resource "oci_core_instance" "vm-1" {
   }
 
   # Optional
-  display_name = "vm-1"
+  display_name = "vm1"
   create_vnic_details {
     assign_public_ip = true
     # private_ip = var.instance_create_vnic_details_private_ip
@@ -214,6 +214,7 @@ resource "oci_core_instance" "vm-1" {
   }
   metadata = {
     ssh_authorized_keys = file(var.public_key_path)
+    user_data = filebase64("init-vm1.sh")
   }
 
 }
