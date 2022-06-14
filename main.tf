@@ -68,6 +68,7 @@ module "webserver" {
   myip                           = var.myip
   instance_shape                 = var.instance_shape
   subnet_id                      = module.subnet1.subnet_obj.id
+  web_server_private_ip          = var.web_server_private_ip
   public_key_path                = var.public_key_path
   image_operating_system         = var.image_operating_system
   image_operating_system_version = var.image_operating_system_version

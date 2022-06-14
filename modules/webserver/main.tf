@@ -21,7 +21,7 @@ resource "oci_core_instance" "webserver" {
   display_name = "webserver"
   create_vnic_details {
     assign_public_ip = true
-    # private_ip = var.instance_create_vnic_details_private_ip
+    private_ip = var.web_server_private_ip
     subnet_id = var.subnet_id
     nsg_ids = [
       oci_core_network_security_group.webserver-nsg.id
