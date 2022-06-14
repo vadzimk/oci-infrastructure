@@ -20,4 +20,4 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 sudo systemctl start docker
 sudo usermod -aG docker ubuntu
-newgrp docker
+newgrp - docker
