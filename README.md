@@ -1,4 +1,4 @@
-# Terraform configuration code for my cloud infrastructure (OCI)
+# Terraform configuration for my cloud infrastructure (OCI)
 
 ## Intro
 This configuration code automatically provisiones the necessary infrastructure in my cloud using Terraform.
