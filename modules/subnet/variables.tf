@@ -4,3 +4,4 @@ variable "vcn_id" {}
 variable "env_prefix" {}
 variable "internet_gateway_enabled" {}
 variable "nametag" {}
+variable "internet_gateway_id" {}

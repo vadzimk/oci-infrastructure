@@ -29,6 +29,21 @@ resource "oci_core_vcn" "my-vcn" {
 
 }
 
+# internet gateway [Resource limit 1 per vcn]
+
+resource "oci_core_internet_gateway" "internet-gateway" {
+  #Required
+  compartment_id = var.compartment_id
+  vcn_id         = oci_core_vcn.my-vcn.id
+
+  #Optional
+  enabled      = var.internet_gateway_enabled
+  display_name = "${var.env_prefix}-vcn-ig"
+
+}
+
+
+
 # subnet
 module "subnet1" {
   source                   = "./modules/subnet"
@@ -38,6 +53,7 @@ module "subnet1" {
   env_prefix               = var.env_prefix
   internet_gateway_enabled = var.internet_gateway_enabled
   nametag                  = "1"
+  internet_gateway_id      = oci_core_internet_gateway.internet-gateway.id
 
 }
 

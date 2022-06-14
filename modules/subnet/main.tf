@@ -26,18 +26,6 @@ resource "oci_core_subnet" "dsubnet" {
 #   route_table_id =oci_core_route_table.my-vcn-rt.id
 # }
 
-# internet gateway
-
-resource "oci_core_internet_gateway" "internet-gateway" {
-  #Required
-  compartment_id = var.compartment_id
-  vcn_id         = var.vcn_id
-
-  #Optional
-  enabled      = var.internet_gateway_enabled 
-  display_name = "${var.env_prefix}-subnet${var.nametag}-ig"
-
-}
 
 # routing table
 
@@ -57,7 +45,7 @@ resource "oci_core_route_table" "routing-table" {
 
   route_rules {
     #Required
-    network_entity_id = oci_core_internet_gateway.internet-gateway.id
+    network_entity_id = var.internet_gateway_id
 
     #Optional
     description      = "internet gateway"
