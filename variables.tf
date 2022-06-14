@@ -15,3 +15,5 @@ variable "instance_shape" {}
 variable "image_operating_system" {}
 variable "image_operating_system_version" {}
 variable "public_key_path" {}
+variable "image_default_user_name" {}
+variable "private_key_path" {}

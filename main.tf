@@ -207,14 +207,32 @@ resource "oci_core_instance" "vm1" {
   create_vnic_details {
     assign_public_ip = true
     # private_ip = var.instance_create_vnic_details_private_ip
-    subnet_id        = oci_core_subnet.subnet-1.id
+    subnet_id = oci_core_subnet.subnet-1.id
     nsg_ids = [
       oci_core_network_security_group.vm1-NSG.id
     ]
   }
   metadata = {
     ssh_authorized_keys = file(var.public_key_path)
-    user_data = filebase64("init-vm1.sh")
+    # user_data           = filebase64("init-vm1.sh") # replaced by the provisioner bleow
+  }
+
+  # provisioner section --->
+  # not recommended - use configuration management tool instead
+  connection {
+    type        = "ssh"
+    host        = self.public_ip # find by terraform state show  oci_core_instance.vm1 | grep ip
+    user        = var.image_default_user_name
+    private_key = file(var.private_key_path)
+  }
+
+  provisioner "file" {
+    source="init-vm1.sh"
+    destination = "/home/ubuntu/init-vm1.sh"
+  }
+
+  provisioner "remote-exec" {
+    script=file("init-vm1.sh")
   }
 
 }
