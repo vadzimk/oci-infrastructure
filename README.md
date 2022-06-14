@@ -12,8 +12,7 @@ It can run on a local machine or be a part of CI/CD pipeline (Jenkins or Github 
 **To create this infrasturcture `terraform.tfvars` file must be present in the root module  with the following secrets:**  
 
 
-<!-- blank line --> 
-Authentication block can be generated from:  
+The authentication block can be generated from:  
 Dashboard --> User --> API keys --> Add API key --> [Configuration file](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm)
 
 /* --------- authentication --------- */
@@ -43,7 +42,7 @@ Dashboard --> User --> API keys --> Add API key --> [Configuration file](https:/
 `instance_shape` # [instance shapes](https://docs.oracle.com/en-us/iaas/Content/Compute/References/computeshapes.htm)  
 `image_operating_system` # [images](https://docs.oracle.com/en-us/iaas/images/)  
 `image_operating_system_version`  
-`public_key_path` # ssh-keygen -t rsa -m PEM
+`public_key_path` # ssh-keygen -t rsa -m PEM  
 `web_server_private_ip` # from the `subnet_cidr_block`  
 `myip` # ip address allowed to ssh  
 `allow_ssh_from_anywhere` # true / false  
