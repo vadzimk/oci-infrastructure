@@ -15,7 +15,7 @@ echo \
 
 apt-cache policy docker-ce
 sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-compose
 # ----------------- . ---------------- #
 
 sudo systemctl start docker
