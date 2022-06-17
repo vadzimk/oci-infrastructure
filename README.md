@@ -2,10 +2,11 @@
 
 ## Intro
 This configuration code automatically provisiones the necessary infrastructure in my cloud using Terraform.
-It can run on a local machine or be a part of CI/CD pipeline (Jenkins or Github Actions)
+It can run on a local machine or be a part of CI/CD pipeline (Jenkins or GitLab)
 
 
-![Philadelphia's Magic Gardens. This place was so cool!](./Diagram.drawio.svg "Diagram of the current limited free tier infrastructure")
+
+![Diagram of the current cloud infrastructure](./Diagram.drawio.svg "Diagram of the current limited free tier cloud infrastructure")
 
 
 ## Input Variables
