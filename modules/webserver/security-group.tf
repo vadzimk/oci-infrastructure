@@ -56,8 +56,8 @@ resource "oci_core_network_security_group_security_rule" "http-rule" {
     #Optional
     destination_port_range {
       #Required
-      max = "8080"
-      min = "8080"
+      max = "80"
+      min = "80"
     }
   }
 }
@@ -80,6 +80,28 @@ resource "oci_core_network_security_group_security_rule" "https-rule" {
       #Required
       max = "443"
       min = "443"
+    }
+  }
+}
+
+# PostgreSql rule for test db
+
+resource "oci_core_network_security_group_security_rule" "https-rule" {
+  #Required
+  network_security_group_id = oci_core_network_security_group.webserver-nsg.id
+  direction                 = "INGRESS"
+  protocol                  = "6" # TCP protocol
+
+  #Optional
+  description = "Allow PostgreSql"
+  source      = "0.0.0.0/0" # all
+  source_type = "CIDR_BLOCK"
+  tcp_options {
+    #Optional
+    destination_port_range {
+      #Required
+      max = "5432"
+      min = "5432"
     }
   }
 }
