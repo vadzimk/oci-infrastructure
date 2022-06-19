@@ -1,6 +1,6 @@
 # Terraform configuration for cloud infrastructure (OCI)
 
-## Intro
+## Overview
 This configuration code automatically provisiones the necessary infrastructure in my cloud using Terraform.
 It can run on a local machine or be a part of CI/CD pipeline (Jenkins or GitLab)
 
