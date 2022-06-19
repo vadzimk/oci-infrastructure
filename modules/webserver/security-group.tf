@@ -86,7 +86,7 @@ resource "oci_core_network_security_group_security_rule" "https-rule" {
 
 # PostgreSql rule for test db
 
-resource "oci_core_network_security_group_security_rule" "https-rule" {
+resource "oci_core_network_security_group_security_rule" "PostgreSql-rule" {
   #Required
   network_security_group_id = oci_core_network_security_group.webserver-nsg.id
   direction                 = "INGRESS"
