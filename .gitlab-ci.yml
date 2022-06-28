@@ -1,0 +1,20 @@
+# This is a multi-project pipeline
+# it will trigger downstream pipelines
+
+include:
+  - template: Terraform/Base.gitlab-ci.yml
+
+variables:
+  TF_STATE_NAME: default
+  TF_CACHE_KEY: default
+  # If your terraform files are in a subdirectory, set TF_ROOT accordingly. For example:
+  # TF_ROOT: terraform/production
+
+stages:
+  - build
+
+build_infrastructure:
+  stage: build
+  extends:
+    .terraform:validate
+

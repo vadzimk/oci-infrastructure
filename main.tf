@@ -17,7 +17,7 @@ provider "oci" {
   region           = var.region
 }
 
-# virtual cloud network
+# Virtual cloud network
 
 resource "oci_core_vcn" "my-vcn" {
   #Required
@@ -29,7 +29,7 @@ resource "oci_core_vcn" "my-vcn" {
 
 }
 
-# internet gateway [Resource limit 1 per vcn]
+# Internet gateway [Resource limit 1 per vcn]
 
 resource "oci_core_internet_gateway" "internet-gateway" {
   #Required
@@ -44,7 +44,7 @@ resource "oci_core_internet_gateway" "internet-gateway" {
 
 
 
-# subnet
+# Subnet
 module "subnet1" {
   source                   = "./modules/subnet"
   subnet_cidr_block        = var.subnet_cidr_block
@@ -75,3 +75,19 @@ module "webserver" {
   env_prefix                     = var.env_prefix
   user_data_path                 = "./init-webserver.sh"
 }
+
+# Object storage bucket
+
+resource "oci_objectstorage_bucket" "test_bucket" {
+    #Required
+    compartment_id = var.compartment_id
+    name = var.bucket_name
+    namespace = var.bucket_namespace
+
+    #Optional
+    access_type = var.bucket_access_type
+    storage_tier = var.bucket_storage_tier
+    auto_tiering = var.bucket_auto_tiering
+    versioning = var.bucket_versioning
+}
+

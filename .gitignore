@@ -7,3 +7,4 @@ terraform.tfvars
 *.dtmp
 ims.json
 crash.log
+.idea

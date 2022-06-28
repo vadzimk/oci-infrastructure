@@ -48,11 +48,16 @@ Dashboard --> User --> API keys --> Add API key --> [Configuration file](https:/
 `myip` # ip address allowed to ssh  
 `allow_ssh_from_anywhere` # true / false  
 
-## Installation
+## Running locally
 
+### Installation
 *brew install terraform*
 
-## Usage
+### Usage
 *terraform init*  
 *terraform plan*  
-*terraform apply*  
+*terraform apply* 
+
+## Running in Gitlab CI pipeline
+**This is a multi-project pipeline**  
+It creates the cloud infrastructure AND triggers all downstream pipelines to redeploy all the residing applications.
