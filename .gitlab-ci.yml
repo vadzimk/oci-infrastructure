@@ -1,6 +1,11 @@
 # This is a multi-project pipeline
 # it will trigger downstream pipelines
 
+workflow:
+  rules:
+    - when: always
+
+
 include:
 #  - template: Terraform/Base.gitlab-ci.yml
   - local: 'Base.gitlab-ci.yml'
@@ -21,7 +26,7 @@ validate_infrastructure:
 
 plan_infrastructure:
   stage: build_infrastructure
-  dependencies:
+  needs:
     - validate_infrastructure
   extends:
     .terraform:build
