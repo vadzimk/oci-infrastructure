@@ -2,7 +2,8 @@
 # it will trigger downstream pipelines
 
 include:
-  - template: Terraform/Base.gitlab-ci.yml
+#  - template: Terraform/Base.gitlab-ci.yml
+  - local: 'Base.gitlab-ci.yml'
 
 variables:
   TF_STATE_NAME: default
@@ -11,10 +12,17 @@ variables:
   # TF_ROOT: terraform/production
 
 stages:
-  - build
+  - build_infrastructure
 
-build_infrastructure:
-  stage: build
+validate_infrastructure:
+  stage: build_infrastructure
   extends:
     .terraform:validate
+
+plan_infrastructure:
+  stage: build_infrastructure
+  dependencies:
+    - validate_infrastructure
+  extends:
+    .terraform:build
 
