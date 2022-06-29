@@ -17,5 +17,6 @@ data "terraform_remote_state" "gitlab" {
     unlock_address = "${var.remote_state_address}/lock"
     lock_method = "POST"
     unlock_method = "DELETE"
+    retry_wait_min = "5"
   }
 }
