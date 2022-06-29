@@ -3,9 +3,14 @@
 # using hints from template
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.gitlab-ci.yml
 
-#workflow:
-#  rules:
-#    - when: never
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_COMMIT_BRANCH == "master"
+      changes:
+        - ./**/*.tf
+        - ./**/*.sh
+      when: always
+    when: never
 
 variables:
   TF_STATE: ${CI_PROJECT_NAME}

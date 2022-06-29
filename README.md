@@ -10,7 +10,7 @@ It can run on a local machine or be a part of CI/CD pipeline (Jenkins or GitLab)
 
 
 ## Input Variables
-**To create this infrasturcture `terraform.tfvars` file must be present in the root module  with the following secrets:**  
+**To create this infrastructure `terraform.tfvars` file must be present in the root module  with the following secrets:**  
 
 
 The authentication block can be generated from:  
@@ -22,7 +22,7 @@ Dashboard --> User --> API keys --> Add API key --> [Configuration file](https:/
 `fingerprint`  
 `tenancy`  
 `region`  
-`key_file`  
+`key_file`  is the `KEY_FILE` secret variable
 
 /* ----------- compartment ---------- */
 
@@ -48,10 +48,6 @@ Dashboard --> User --> API keys --> Add API key --> [Configuration file](https:/
 `myip` # ip address allowed to ssh  
 `allow_ssh_from_anywhere` # true / false  
 
-/* --------------- gitlab -------------- */  
-[Gitlab-managed Terraform state](https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html)
-`remote_state_address` = "https://gitlab.com/api/v4/projects/<project-id>/terraform/state/<state-name>"  
-`gitlab_token`
 
 ## Running locally
 The first run must be done locally to initialize terraform state.
@@ -62,11 +58,11 @@ The first run must be done locally to initialize terraform state.
 ### Usage
 - Locally run the script `backend-init-set.sh` It will initialize backend state in the Gitlab's terraform storage.
 - Locally run `terraform plan` to create state files in the backend.
-- If the terraform state was destroyed you can recreate it using this import script `import-existing.sh`  
+- If the Terraform state was destroyed you can recreate it using this import script `import-existing.sh`  
 The resource ids can be found in the OCI GUI.
 There is a caveat with network security group ids - they are not found in OCI GUI, you can view them using oci-cli command `oci network nsg rules list --nsg-id <nsg-id>`
 - you can locally run *terraform apply* to create new cloud resources as it uses the same backend as the Gitlab pipeline.
 
 ## Running in Gitlab CI pipeline
-**This is a multi-project pipeline**  
-It creates the cloud infrastructure AND triggers all downstream pipelines to redeploy all the residing applications.
+Changes pushed to this repository trigger pipeline with a manual deploy step that applies the Terraform configuration changes.  
+***Project—>Settings—>CI/CD—>Variables*** must have a secret `TF_VARS` with the contents of `terraform.tfvars`
