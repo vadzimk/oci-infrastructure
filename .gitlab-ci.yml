@@ -46,13 +46,7 @@ plan:
       -backend-config="lock_method=POST" \
       -backend-config="unlock_method=DELETE" \
       -backend-config="retry_wait_min=5"
-  cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-      - "$(pwd)/terraform.tfvars"
-      - "$(pwd)/.oci/terraform-configuration_2022-06-11T13 01 59.878Z.pem"
-      - "$(pwd)/.oci/wskey.pub"
-    expire_in: 1 week
+
 
 apply:
   stage: deploy_infrastructure
@@ -60,6 +54,10 @@ apply:
   dependencies:
     - plan
   before_script:
+    - cat "$TF_VARS" > "$(pwd)/terraform.tfvars"
+    - mkdir "$(pwd)/.oci"
+    - cat "$KEY_FILE" > "$(pwd)/.oci/terraform-configuration_2022-06-11T13 01 59.878Z.pem"
+    - cat "$WS_KEY_PUB" > "$(pwd)/.oci/wskey.pub"
     - ls -htla
   environment:
     name: $TF_STATE
