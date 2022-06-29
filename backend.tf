@@ -14,20 +14,21 @@
 #  }
 #}
 
-#variable "gitlab_username" {}
-#variable "remote_state_address" {}
+variable "gitlab_username" {}
+variable "gitlab_token" {}
+variable "remote_state_address" {}
 
-#data "terraform_remote_state" "gitlab" {
-#  backend = "http"
-#
-#  config = {
-#    username = "gitlab-ci-token"
-#    password = "$CI_JOB_TOKEN"
-#    address = "$TF_ADDRESS"
-#    lock_address = "$TF_ADDRESS/lock"
-#    unlock_address = "$TF_ADDRESS/lock"
-#    lock_method = "POST"
-#    unlock_method = "DELETE"
-#    retry_wait_min = "5"
-#  }
-#}
+data "terraform_remote_state" "gitlab" {
+  backend = "http"
+
+  config = {
+    username = "gitlab-ci-token"
+    password = var.gitlab_token
+    address = var.remote_state_address
+    lock_address = "${var.remote_state_address}/lock"
+    unlock_address = "${var.remote_state_address}/lock"
+    lock_method = "POST"
+    unlock_method = "DELETE"
+    retry_wait_min = "5"
+  }
+}
