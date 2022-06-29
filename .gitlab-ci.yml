@@ -15,7 +15,7 @@ stages:
   - deploy_infrastructure
 
 validate_infrastructure:
-  stage: build_infrastructure
+  stage: validate_infrastructure
   extends:
     .terraform:validate
 
