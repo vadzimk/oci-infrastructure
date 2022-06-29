@@ -27,9 +27,9 @@ plan_infrastructure:
     .terraform:build
   before_script:
     - cat "$TF_VARS" > "$(pwd)/terraform.tfvars"
-    - echo $TF_VARS
+    - mkdir "$(pwd)/.oci"
+    - cat "$KEY_FILE" > "$(pwd)/.oci/terraform-configuration_2022-06-11T13 01 59.878Z.pem"
     - ls
-    - cat "$(pwd)/terraform.tfvars"
 
 
 
