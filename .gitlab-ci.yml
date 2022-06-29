@@ -5,6 +5,9 @@ workflow:
   rules:
     - when: always
 
+variables:
+  TF_STATE: ${CI_PROJECT_NAME}
+  TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
 
 include:
 #  - template: Terraform/Base.gitlab-ci.yml

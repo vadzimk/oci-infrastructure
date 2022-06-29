@@ -10,11 +10,11 @@ data "terraform_remote_state" "gitlab" {
   backend = "http"
 
   config = {
-    username = var.gitlab_username
+    username = "gitlab-ci-token"
     password = "$CI_JOB_TOKEN"
-    address = var.remote_state_address
-    lock_address = "${var.remote_state_address}/lock"
-    unlock_address = "${var.remote_state_address}/lock"
+    address = "$TF_ADDRESS"
+    lock_address = "$TF_ADDRESS/lock"
+    unlock_address = "$TF_ADDRESS/lock"
     lock_method = "POST"
     unlock_method = "DELETE"
     retry_wait_min = "5"
