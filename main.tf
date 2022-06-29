@@ -1,6 +1,17 @@
 # https://registry.terraform.io/providers/oracle/oci/latest/docs
 #  https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm#APIKeyAuth
 terraform {
+  backend "http" {
+    username = "gitlab-ci-token"
+    password = "$CI_JOB_TOKEN"
+    address = "$TF_ADDRESS"
+    lock_address = "$TF_ADDRESS/lock"
+    unlock_address = "$TF_ADDRESS/lock"
+    lock_method = "POST"
+    unlock_method = "DELETE"
+    retry_wait_min = "5"
+  }
+
   required_providers {
     oci = {
       source  = "oracle/oci"
