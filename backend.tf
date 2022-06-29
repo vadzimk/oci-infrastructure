@@ -1,7 +1,10 @@
 # gitlab stores the terraform state
 # https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html
 
-
+terraform {
+  backend "http" {
+  }
+}
 
 variable "gitlab_username" {}
 variable "remote_state_address" {}
