@@ -11,7 +11,9 @@ data "terraform_remote_state" "gitlab" {
 
   config = {
     address = var.remote_state_address
+    lock_address = "${var.remote_state_address}/lock"
     username = var.gitlab_username
     password = "$CI_JOB_TOKEN"
+
   }
 }
