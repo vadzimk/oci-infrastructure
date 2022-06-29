@@ -34,6 +34,7 @@ plan_infrastructure:
     - cat "$KEY_FILE" > "$(pwd)/.oci/terraform-configuration_2022-06-11T13 01 59.878Z.pem"
     - cat "$WS_KEY_PUB" > "$(pwd)/.oci/wskey.pub"
     - export TF_ADDRESS=$TF_ADDRESS
+    - echo $TF_ADDRESS
 
 
 
