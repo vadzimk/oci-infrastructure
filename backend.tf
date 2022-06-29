@@ -14,13 +14,13 @@
 #  }
 #}
 
-variable "gitlab_username" {}
+
 variable "gitlab_token" {}
 variable "remote_state_address" {}
 
 data "terraform_remote_state" "gitlab" {
   backend = "http"
-
+# terraform block does not allow variable values, only constants
   config = {
     username = "gitlab-ci-token"
     password = var.gitlab_token
