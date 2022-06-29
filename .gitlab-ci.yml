@@ -16,18 +16,17 @@ include:
   - local: 'Base.gitlab-ci.yml'
 
 stages:
-  - build_infrastructure
+  - validate_infrastructure_code
+  - build_infrastructure_plan
   - deploy_infrastructure
 
-validate_infrastructure:
-  stage: build_infrastructure
+validate:
+  stage: validate_infrastructure_code
   extends:
     .terraform:validate
 
-plan_infrastructure:
-  stage: build_infrastructure
-  needs:
-    - validate_infrastructure
+plan:
+  stage: build_infrastructure_plan
   extends:
     .terraform:build # ==plan
   before_script:
@@ -37,7 +36,6 @@ plan_infrastructure:
     - cat "$WS_KEY_PUB" > "$(pwd)/.oci/wskey.pub"
     - export TF_ADDRESS=$TF_ADDRESS
     - echo $TF_ADDRESS
-    - echo TF_STATE_NAME=$TF_STATE_NAME
     - |
       terraform init -reconfigure \
       -backend-config="address=${TF_ADDRESS}" \
@@ -48,12 +46,20 @@ plan_infrastructure:
       -backend-config="lock_method=POST" \
       -backend-config="unlock_method=DELETE" \
       -backend-config="retry_wait_min=5"
+  artifacts:
+    paths:
+      - "$(pwd)/terraform.tfvars"
+      - "$(pwd)/.oci/terraform-configuration_2022-06-11T13 01 59.878Z.pem"
+      - "$(pwd)/.oci/wskey.pub"
+    expire_in: 1 week
 
-apply_infrastructure:
+apply:
   stage: deploy_infrastructure
   extends: .terraform:deploy # ==apply
   dependencies:
-    - plan_infrastructure
+    - plan
+  before_script:
+    - ls -htla
   environment:
     name: $TF_STATE
   when: manual
