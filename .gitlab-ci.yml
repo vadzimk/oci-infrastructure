@@ -29,6 +29,7 @@ plan_infrastructure:
     - cat "$TF_VARS" > "$(pwd)/terraform.tfvars"
     - echo $TF_VARS
     - ls
+    - cat "$(pwd)/terraform.tfvars"
 
 
 
