@@ -5,12 +5,12 @@
 
 workflow:
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_COMMIT_BRANCH == "master"
-      changes:
-        - ./**/*.tf
-        - ./**/*.sh
-      when: always
-    when: never
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_COMMIT_BRANCH == "master"
+    changes:
+      - ./**/*.tf
+      - ./**/*.sh
+    when: always
+  when: never
 
 variables:
   TF_STATE: ${CI_PROJECT_NAME}
