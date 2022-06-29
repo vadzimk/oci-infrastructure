@@ -36,7 +36,7 @@ plan_infrastructure:
     - export TF_ADDRESS=$TF_ADDRESS
     - echo $TF_ADDRESS
     - |
-      terraform init -migrate-state \
+      terraform init \
       -backend-config="address=${TF_ADDRESS}" \
       -backend-config="lock_address=${TF_ADDRESS}/lock" \
       -backend-config="unlock_address=${TF_ADDRESS}/lock" \
