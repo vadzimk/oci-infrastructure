@@ -6,8 +6,8 @@ output "all-availability-domains-in-your-tenancy" {
 locals {
   image_name_id = [
     for img in data.oci_core_images.available_images.images : {
-      "id" : img.id, 
-      "name" : img.display_name
+      id : img.id,
+      name : img.display_name
     }
   ]
 }

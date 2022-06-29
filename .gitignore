@@ -8,5 +8,6 @@
 ims.json
 crash.log
 .idea
-init.sh
-init-local.sh
+backend-init-set.sh
+backend-init-change.sh
+imports.sh
