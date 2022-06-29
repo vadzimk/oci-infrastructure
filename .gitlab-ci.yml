@@ -10,7 +10,7 @@ workflow:
       - ./**/*.tf
       - ./**/*.sh
     when: always
-  when: never
+  - when: never
 
 variables:
   TF_STATE: ${CI_PROJECT_NAME}
