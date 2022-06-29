@@ -79,7 +79,7 @@ module "webserver" {
 
 # Object storage bucket
 
-resource "oci_objectstorage_bucket" "test_bucket" {
+resource "oci_objectstorage_bucket" "image_bucket" {
     #Required
     compartment_id = var.compartment_id
     name = var.bucket_name

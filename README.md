@@ -65,8 +65,7 @@ The first run must be done locally to initialize terraform state.
 - If the terraform state was destroyed you can recreate it using this import script `import-existing.sh`  
 The resource ids can be found in the OCI GUI.
 There is a caveat with network security group ids - they are not found in OCI GUI, you can view them using oci-cli command `oci network nsg rules list --nsg-id <nsg-id>`
-
-- ?locally run *terraform apply* to create cloud resources?
+- you can locally run *terraform apply* to create new cloud resources as it uses the same backend as the Gitlab pipeline.
 
 ## Running in Gitlab CI pipeline
 **This is a multi-project pipeline**  
