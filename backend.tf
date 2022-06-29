@@ -3,20 +3,20 @@
 
 terraform {
   backend "http" {
-    username = "gitlab-ci-token"
-    password = var.gitlab_token
-    address = var.remote_state_address
-    lock_address = "${var.remote_state_address}/lock"
-    unlock_address = "${var.remote_state_address}/lock"
-    lock_method = "POST"
-    unlock_method = "DELETE"
-    retry_wait_min = "5"
+#    username = "gitlab-ci-token"
+#    password = var.gitlab_token
+#    address = var.remote_state_address
+#    lock_address = "${var.remote_state_address}/lock"
+#    unlock_address = "${var.remote_state_address}/lock"
+#    lock_method = "POST"
+#    unlock_method = "DELETE"
+#    retry_wait_min = "5"
   }
 }
 
 
-variable "gitlab_token" {}
-variable "remote_state_address" {}
+#variable "gitlab_token" {}
+#variable "remote_state_address" {}
 
 #data "terraform_remote_state" "gitlab" {
 #  backend = "http"
