@@ -3,9 +3,9 @@
 # using hints from template
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.gitlab-ci.yml
 
-workflow:
-  rules:
-    - when: always
+#workflow:
+#  rules:
+#    - when: never
 
 variables:
   TF_STATE: ${CI_PROJECT_NAME}
@@ -49,13 +49,14 @@ plan_infrastructure:
       -backend-config="unlock_method=DELETE" \
       -backend-config="retry_wait_min=5"
 
-#deploy:
-#  stage: deploy_infrastructure
-#  extends: .terraform:deploy # ==apply
-#  dependencies:
-#    - build
-#  environment:
-#    name: $TF_STATE_NAME
+deploy:
+  stage: deploy_infrastructure
+  extends: .terraform:deploy # ==apply
+  dependencies:
+    - plan_infrastructure
+  environment:
+    name: $TF_STATE
+  when: manual
 
 
 
