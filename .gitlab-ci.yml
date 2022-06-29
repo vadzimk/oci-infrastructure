@@ -27,6 +27,8 @@ plan_infrastructure:
     .terraform:build
   before_script:
     - cat "$TF_VARS" > "$(pwd)/terraform.tfvars"
+    - echo $TF_VARS
+    - ls
 
 
 
