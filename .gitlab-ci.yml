@@ -10,14 +10,9 @@ include:
 #  - template: Terraform/Base.gitlab-ci.yml
   - local: 'Base.gitlab-ci.yml'
 
-variables:
-  TF_STATE_NAME: default
-  TF_CACHE_KEY: default
-  # If your terraform files are in a subdirectory, set TF_ROOT accordingly. For example:
-  # TF_ROOT: terraform/production
-
 stages:
   - build_infrastructure
+  - deploy_infrastructure
 
 validate_infrastructure:
   stage: build_infrastructure
@@ -30,4 +25,12 @@ plan_infrastructure:
     - validate_infrastructure
   extends:
     .terraform:build
+  before_script:
+    - cat "$TF_VARS" > "$(pwd)/terraform.tfvars"
+
+
+
+
+
+
 
