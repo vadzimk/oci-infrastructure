@@ -1,5 +1,7 @@
 # This is a multi-project pipeline
 # it will trigger downstream pipelines
+# using hints from template
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.gitlab-ci.yml
 
 workflow:
   rules:
@@ -27,7 +29,7 @@ plan_infrastructure:
   needs:
     - validate_infrastructure
   extends:
-    .terraform:build
+    .terraform:build # ==plan
   before_script:
     - cat "$TF_VARS" > "$(pwd)/terraform.tfvars"
     - mkdir "$(pwd)/.oci"
@@ -35,6 +37,7 @@ plan_infrastructure:
     - cat "$WS_KEY_PUB" > "$(pwd)/.oci/wskey.pub"
     - export TF_ADDRESS=$TF_ADDRESS
     - echo $TF_ADDRESS
+    - echo TF_STATE_NAME=$TF_STATE_NAME
     - |
       terraform init \
       -backend-config="address=${TF_ADDRESS}" \
@@ -45,6 +48,15 @@ plan_infrastructure:
       -backend-config="lock_method=POST" \
       -backend-config="unlock_method=DELETE" \
       -backend-config="retry_wait_min=5"
+
+#deploy:
+#  stage: deploy_infrastructure
+#  extends: .terraform:deploy # ==apply
+#  dependencies:
+#    - build
+#  environment:
+#    name: $TF_STATE_NAME
+
 
 
 

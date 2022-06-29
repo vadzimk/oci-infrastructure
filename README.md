@@ -48,15 +48,25 @@ Dashboard --> User --> API keys --> Add API key --> [Configuration file](https:/
 `myip` # ip address allowed to ssh  
 `allow_ssh_from_anywhere` # true / false  
 
+/* --------------- gitlab -------------- */  
+[Gitlab-managed Terraform state](https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html)
+`remote_state_address` = "https://gitlab.com/api/v4/projects/<project-id>/terraform/state/<state-name>"  
+`gitlab_token`
+
 ## Running locally
+The first run must be done locally to initialize terraform state.
 
 ### Installation
 *brew install terraform*
 
 ### Usage
-*terraform init*  
-*terraform plan*  
-*terraform apply* 
+- Locally run the script `backend-init-set.sh` It will initialize backend state in the Gitlab's terraform storage.
+- Locally run `terraform plan` to create state files in the backend.
+- If the terraform state was destroyed you can recreate it using this import script `import-existing.sh`  
+The resource ids can be found in the OCI GUI.
+There is a caveat with network security group ids - they are not found in OCI GUI, you can view them using oci-cli command `oci network nsg rules list --nsg-id <nsg-id>`
+
+- ?locally run *terraform apply* to create cloud resources?
 
 ## Running in Gitlab CI pipeline
 **This is a multi-project pipeline**  
