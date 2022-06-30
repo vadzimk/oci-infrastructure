@@ -2,15 +2,14 @@
 
 ## Overview
 This configuration code automatically provisiones the necessary infrastructure in my cloud using Terraform.
-It can run on a local machine or be a part of CI/CD pipeline (Jenkins or GitLab)
-
+It can run on a local machine or inside the Gitlab CI/CD pipeline.
 
 
 ![Diagram of the current cloud infrastructure](./Diagram.drawio.svg "Diagram of the current limited free tier cloud infrastructure")
 
 
-## Input Variables
-**To create this infrastructure `terraform.tfvars` file must be present in the root module  with the following secrets:**  
+## Infrastructure secret variables
+**Create`terraform.tfvars` file in the root module with the following secrets:**  
 
 
 The authentication block can be generated from:  
@@ -50,7 +49,7 @@ Dashboard --> User --> API keys --> Add API key --> [Configuration file](https:/
 
 
 ## Running locally
-The first run must be done locally to initialize terraform state.
+The first run must be done locally to initialize Terraform state.
 
 ### Installation
 *brew install terraform*
@@ -61,7 +60,7 @@ The first run must be done locally to initialize terraform state.
 - If the Terraform state was destroyed you can recreate it using this import script `import-existing.sh`  
 The resource ids can be found in the OCI GUI.
 There is a caveat with network security group ids - they are not found in OCI GUI, you can view them using oci-cli command `oci network nsg rules list --nsg-id <nsg-id>`
-- you can locally run *terraform apply* to create new cloud resources as it uses the same backend as the Gitlab pipeline.
+- You can locally run *terraform apply* to create new cloud resources as it uses the same backend as the Gitlab pipeline.
 
 ## Running in Gitlab CI pipeline
 Changes pushed to this repository trigger pipeline with a manual deploy step that applies the Terraform configuration changes.  
