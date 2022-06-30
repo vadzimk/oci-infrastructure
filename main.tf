@@ -1,5 +1,5 @@
 # https://registry.terraform.io/providers/oracle/oci/latest/docs
-#  https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm#APIKeyAuth
+# https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm#APIKeyAuth
 
 terraform {
   required_providers {
