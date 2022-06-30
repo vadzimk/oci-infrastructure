@@ -63,5 +63,5 @@ There is a caveat with network security group ids - they are not found in OCI GU
 - You can locally run *terraform apply* to create new cloud resources as it uses the same backend as the Gitlab pipeline.
 
 ## Running in Gitlab CI pipeline
-Changes pushed to this repository trigger pipeline with a manual deploy step that applies the Terraform configuration changes.  
+Changes pushed to this repository's `*.tf` or `*.sh` files trigger the pipeline with a manual deploy step that applies the Terraform configuration changes to the cloud.  
 ***Project—>Settings—>CI/CD—>Variables*** must have a secret `TF_VARS` with the contents of `terraform.tfvars`
