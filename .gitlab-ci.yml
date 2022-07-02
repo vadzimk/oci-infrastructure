@@ -9,6 +9,7 @@ workflow:
     changes:
       - "**/*.tf"
       - "**/*.sh"
+      - "*.gitlab-ci.yml"
     when: always
   - when: never
 
