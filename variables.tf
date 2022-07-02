@@ -19,6 +19,8 @@ variable "image_operating_system" {}
 variable "image_operating_system_version" {}
 variable "public_key_path" {}
 variable "web_server_private_ip" {}
+
+# --------------------
 variable "bucket_name" {}
 variable "bucket_namespace" {}
 variable "bucket_access_type" {
@@ -33,3 +35,5 @@ variable "bucket_auto_tiering" {
 variable "bucket_versioning" {
   default = "Disabled"
 }
+variable "carshare_public_key_path" {}
+variable "admin_group_id" {}

@@ -77,9 +77,9 @@ module "webserver" {
   user_data_path                 = "./init-webserver.sh"
 }
 
-# Object storage bucket
+# Object storage bucket (for carshare app)
 
-resource "oci_objectstorage_bucket" "image_bucket" {
+resource "oci_objectstorage_bucket" "image-bucket" {
     #Required
     compartment_id = var.compartment_id
     name = var.bucket_name
@@ -92,3 +92,30 @@ resource "oci_objectstorage_bucket" "image_bucket" {
     versioning = var.bucket_versioning
 }
 
+# user (for carshare app)
+
+resource "oci_identity_user" "carshare-backend-user" {
+  #Required
+  compartment_id = var.tenancy
+  description = "backend user for carshare app"
+  name = "carshare-backend-user"
+}
+
+data "oci_identity_user" "carshare-backend-user" {
+  #Required
+  user_id = oci_identity_user.carshare-backend-user.id
+}
+
+resource "oci_identity_api_key" "carshare-backend-user-key" {
+  #Required
+  key_value = file(var.carshare_public_key_path)
+  user_id = data.oci_identity_user.carshare-backend-user.id
+}
+
+resource "oci_identity_user_group_membership" "carshare-backend-group-membership" {
+  #Required
+  group_id = var.admin_group_id
+  user_id = data.oci_identity_user.carshare-backend-user.id
+}
+
+# -------------------------------------

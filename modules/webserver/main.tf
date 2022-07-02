@@ -27,9 +27,9 @@ resource "oci_core_instance" "webserver" {
       oci_core_network_security_group.webserver-nsg.id
     ]
   }
+
   metadata = {
     ssh_authorized_keys = file(var.public_key_path)
     user_data           = filebase64(var.user_data_path)
   }
-
 }
