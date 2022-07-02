@@ -39,6 +39,7 @@ plan:
     - mkdir "$(pwd)/.oci"
     - cat "$KEY_FILE" > "$(pwd)/.oci/terraform-configuration_2022-06-11T13 01 59.878Z.pem"
     - cat "$WS_KEY_PUB" > "$(pwd)/.oci/wskey.pub"
+    - cat "$CARSHARE_KEY_PUB" > "$(pwd)/.oci/carshare_key.pub"
     - export TF_ADDRESS=$TF_ADDRESS
     - echo $TF_ADDRESS
     - |
@@ -62,6 +63,7 @@ apply:
     - cat "$TF_VARS" > "$(pwd)/terraform.tfvars"
     - mkdir "$(pwd)/.oci"
     - cat "$KEY_FILE" > "$(pwd)/.oci/terraform-configuration_2022-06-11T13 01 59.878Z.pem"
+    - cat "$CARSHARE_KEY_PUB" > "$(pwd)/.oci/carshare_key.pub"
     - cat "$WS_KEY_PUB" > "$(pwd)/.oci/wskey.pub"
     - ls -htla
   environment:
