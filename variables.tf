@@ -37,3 +37,4 @@ variable "bucket_versioning" {
 }
 variable "carshare_public_key_path" {}
 variable "admin_group_id" {}
+variable "carshare_user_email" {}

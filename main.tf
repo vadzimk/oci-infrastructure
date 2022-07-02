@@ -99,7 +99,7 @@ resource "oci_identity_user" "carshare-backend-user" {
   compartment_id = var.tenancy
   description = "backend user for carshare app"
   name = "carshare-backend-user"
-  email = ""
+  email = var.carshare_user_email
 }
 
 data "oci_identity_user" "carshare-backend-user" {
