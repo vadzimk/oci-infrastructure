@@ -106,6 +106,26 @@ resource "oci_core_network_security_group_security_rule" "PostgreSql-rule" {
   }
 }
 
+resource "oci_core_network_security_group_security_rule" "adminer-rule" {
+  #Required
+  network_security_group_id = oci_core_network_security_group.webserver-nsg.id
+  direction                 = "INGRESS"
+  protocol                  = "6" # TCP protocol
+
+  #Optional
+  description = "Allow Adminer"
+  source      = "0.0.0.0/0" # all
+  source_type = "CIDR_BLOCK"
+  tcp_options {
+    #Optional
+    destination_port_range {
+      #Required
+      max = "8080"
+      min = "8080"
+    }
+  }
+}
+
 # Egress rule
 
 resource "oci_core_network_security_group_security_rule" "egress-rule" {
