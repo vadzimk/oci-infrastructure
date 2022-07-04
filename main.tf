@@ -118,5 +118,8 @@ resource "oci_identity_user_group_membership" "carshare-backend-group-membership
   group_id = var.admin_group_id
   user_id = data.oci_identity_user.carshare-backend-user.id
 }
-
+data "oci_identity_api_keys" "carshare-backend-user-api-keys" {
+  #Required
+  user_id = oci_identity_user.carshare-backend-user.id
+}
 # -------------------------------------

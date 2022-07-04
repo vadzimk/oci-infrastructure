@@ -2,7 +2,7 @@
 
 ## Overview
 
-This configuration code automatically provisiones the necessary infrastructure in my cloud using Terraform. It can run
+This configuration code automatically provisions the necessary infrastructure in my cloud using Terraform. It can run
 on a local machine or inside the Gitlab CI/CD pipeline.
 
 ![Diagram of the current cloud infrastructure](./Diagram.drawio.svg "Diagram of the current limited free tier cloud infrastructure")
