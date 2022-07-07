@@ -1,21 +1,11 @@
-terraform {
-  required_providers {
-    oci = {
-      source  = "oracle/oci"
-      version = "4.79.0"
-    }
-  }
-}
-
-
 resource "oci_core_subnet" "dsubnet" {
   #Required
   cidr_block     = var.subnet_cidr_block
   compartment_id = var.compartment_id
-  vcn_id         = var.vcn_id
+  vcn_id         = oci_core_vcn.my-vcn.id
 
   #Optional
-  display_name   = "${var.env_prefix}-subnet${var.nametag}"
+  display_name   = "${var.env_prefix}-subnet"
   route_table_id = oci_core_route_table.routing-table.id
 }
 
@@ -37,15 +27,15 @@ Each VCN automatically comes with a default route table that has no rules. If yo
 resource "oci_core_route_table" "routing-table" {
   #Required
   compartment_id = var.compartment_id
-  vcn_id         = var.vcn_id
+  vcn_id         = oci_core_vcn.my-vcn.id
 
   #Optional
 
-  display_name = "${var.env_prefix}-subnet${var.nametag}-rt"
+  display_name = "${var.env_prefix}-subnet-rt"
 
   route_rules {
     #Required
-    network_entity_id = var.internet_gateway_id
+    network_entity_id = oci_core_internet_gateway.internet-gateway.id
 
     #Optional
     description      = "internet gateway"

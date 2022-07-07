@@ -19,7 +19,13 @@ variable "image_operating_system" {}
 variable "image_operating_system_version" {}
 variable "public_key_path" {}
 variable "web_server_private_ip" {}
+# --------------------
 
+#variable "vcn_id" {}
+#variable "nametag" {}
+#variable "internet_gateway_id" {}
+
+variable "gitlab_runner_private_ip" {}
 # --------------------
 variable "bucket_name" {}
 variable "bucket_namespace" {}

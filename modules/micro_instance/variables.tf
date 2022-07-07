@@ -11,4 +11,8 @@ variable "image_operating_system_version" {}
 variable "env_prefix" {}
 variable "image_operating_system" {}
 variable "user_data_path" {}
-variable "web_server_private_ip" {}
+variable "private_ip" {}
+variable "display_name" {}
+variable "nsg_ids" {
+    type = list(string)
+}

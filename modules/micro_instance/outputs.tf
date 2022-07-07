@@ -18,5 +18,5 @@ output "available-images" {
 }
 
 output "ws-instance" {
-  value = oci_core_instance.webserver
+  value = oci_core_instance.micro_instance
 }

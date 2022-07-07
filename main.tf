@@ -45,36 +45,59 @@ resource "oci_core_internet_gateway" "internet-gateway" {
 
 
 
-# Subnet
-module "subnet1" {
-  source                   = "./modules/subnet"
-  subnet_cidr_block        = var.subnet_cidr_block
-  compartment_id           = var.compartment_id
-  vcn_id                   = oci_core_vcn.my-vcn.id
-  env_prefix               = var.env_prefix
-  internet_gateway_enabled = var.internet_gateway_enabled
-  nametag                  = "1"
-  internet_gateway_id      = oci_core_internet_gateway.internet-gateway.id
+## Subnet
+#module "subnet1" {
+#  source                   = "./modules/subnet"
+#  subnet_cidr_block        = var.subnet_cidr_block
+#  compartment_id           = var.compartment_id
+#  vcn_id                   = oci_core_vcn.my-vcn.id
+#  env_prefix               = var.env_prefix
+#  internet_gateway_enabled = var.internet_gateway_enabled
+#  nametag                  = "1"
+#  internet_gateway_id      = oci_core_internet_gateway.internet-gateway.id
+#
+#}
 
-}
 
-
-# Instance
+# Webserver Instance
 
 module "webserver" {
-  source                         = "./modules/webserver"
+  display_name = "webserver"
+  source                         = "./modules/micro_instance"
   compartment_id                 = var.compartment_id
   vcn_id                         = oci_core_vcn.my-vcn.id
   allow_ssh_from_anywhere        = var.allow_ssh_from_anywhere
   myip                           = var.myip
   instance_shape                 = var.instance_shape
-  subnet_id                      = module.subnet1.subnet_obj.id
-  web_server_private_ip          = var.web_server_private_ip
+  subnet_id                      = oci_core_subnet.dsubnet.id
+  nsg_ids = [ oci_core_network_security_group.webserver-nsg.id ]
+  private_ip          = var.web_server_private_ip
   public_key_path                = var.public_key_path
   image_operating_system         = var.image_operating_system
   image_operating_system_version = var.image_operating_system_version
   env_prefix                     = var.env_prefix
-  user_data_path                 = "./init-webserver.sh"
+  user_data_path                 = "./init-instance.sh"
+}
+
+
+# Gitlab runner Instance
+
+module "gitlab_runner" {
+  display_name = "gitlab-runner"
+  source                         = "./modules/micro_instance"
+  compartment_id                 = var.compartment_id
+  vcn_id                         = oci_core_vcn.my-vcn.id
+  allow_ssh_from_anywhere        = var.allow_ssh_from_anywhere
+  myip                           = var.myip
+  instance_shape                 = var.instance_shape
+  subnet_id                      = oci_core_subnet.dsubnet.id
+  nsg_ids = [ oci_core_network_security_group.webserver-nsg.id ]
+  private_ip          = var.gitlab_runner_private_ip
+  public_key_path                = var.public_key_path
+  image_operating_system         = var.image_operating_system
+  image_operating_system_version = var.image_operating_system_version
+  env_prefix                     = var.env_prefix
+  user_data_path                 = "./init-instance.sh"
 }
 
 # Object storage bucket (for carshare app)

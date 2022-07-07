@@ -3,7 +3,7 @@
 resource "oci_core_network_security_group" "webserver-nsg" {
   #Required
   compartment_id = var.compartment_id
-  vcn_id         = var.vcn_id
+  vcn_id         = oci_core_vcn.my-vcn.id
 
   #Optional
   display_name = "${var.env_prefix}-webserver-nsg"
