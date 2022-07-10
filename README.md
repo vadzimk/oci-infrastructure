@@ -70,6 +70,14 @@ Dashboard --> User --> API keys --> Add API key
 - You can locally run *terraform apply* to create new cloud resources as it uses the same backend as the Gitlab
   pipeline.
 
+#### Usage
+- terraform validate
+- terraform init
+- terraform plan
+- terraform apply
+- terraform output -json  
+ _displays the defined outputs of created resources in machine-readable format_
+
 ### Running in Gitlab CI pipeline
 
 Changes pushed to this repository's `*.tf` or `*.sh` files trigger the Gitlab CI pipeline with a manual deploy step that
