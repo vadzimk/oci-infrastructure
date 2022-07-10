@@ -43,26 +43,10 @@ resource "oci_core_internet_gateway" "internet-gateway" {
 
 }
 
-
-
-## Subnet
-#module "subnet1" {
-#  source                   = "./modules/subnet"
-#  subnet_cidr_block        = var.subnet_cidr_block
-#  compartment_id           = var.compartment_id
-#  vcn_id                   = oci_core_vcn.my-vcn.id
-#  env_prefix               = var.env_prefix
-#  internet_gateway_enabled = var.internet_gateway_enabled
-#  nametag                  = "1"
-#  internet_gateway_id      = oci_core_internet_gateway.internet-gateway.id
-#
-#}
-
-
 # Webserver Instance
 
 module "webserver" {
-  display_name = "webserver"
+  display_name                   = "webserver"
   source                         = "./modules/micro_instance"
   compartment_id                 = var.compartment_id
   vcn_id                         = oci_core_vcn.my-vcn.id
@@ -70,8 +54,8 @@ module "webserver" {
   myip                           = var.myip
   instance_shape                 = var.instance_shape
   subnet_id                      = oci_core_subnet.dsubnet.id
-  nsg_ids = [ oci_core_network_security_group.webserver-nsg.id ]
-  private_ip          = var.web_server_private_ip
+  nsg_ids                        = [oci_core_network_security_group.webserver-nsg.id]
+  private_ip                     = var.web_server_private_ip
   public_key_path                = var.public_key_path
   image_operating_system         = var.image_operating_system
   image_operating_system_version = var.image_operating_system_version
@@ -83,16 +67,19 @@ module "webserver" {
 # Gitlab runner Instance
 
 module "gitlab_runner" {
-  display_name = "gitlab-runner"
-  source                         = "./modules/micro_instance"
-  compartment_id                 = var.compartment_id
-  vcn_id                         = oci_core_vcn.my-vcn.id
-  allow_ssh_from_anywhere        = var.allow_ssh_from_anywhere
-  myip                           = var.myip
-  instance_shape                 = var.instance_shape
-  subnet_id                      = oci_core_subnet.dsubnet.id
-  nsg_ids = [ oci_core_network_security_group.webserver-nsg.id ]
-  private_ip          = var.gitlab_runner_private_ip
+  display_name            = "gitlab-runner"
+  source                  = "./modules/micro_instance"
+  compartment_id          = var.compartment_id
+  vcn_id                  = oci_core_vcn.my-vcn.id
+  allow_ssh_from_anywhere = var.allow_ssh_from_anywhere
+  myip                    = var.myip
+  instance_shape          = var.instance_shape
+  subnet_id               = oci_core_subnet.dsubnet.id
+  nsg_ids                 = [
+    oci_core_network_security_group.webserver-nsg.id,
+    oci_core_network_security_group.gitlab-runner-nsg.id
+  ]
+  private_ip                     = var.gitlab_runner_private_ip
   public_key_path                = var.public_key_path
   image_operating_system         = var.image_operating_system
   image_operating_system_version = var.image_operating_system_version
@@ -103,46 +90,57 @@ module "gitlab_runner" {
 # Object storage bucket (for carshare app)
 
 resource "oci_objectstorage_bucket" "image-bucket" {
-    #Required
-    compartment_id = var.compartment_id
-    name = var.bucket_name
-    namespace = var.bucket_namespace
+  #Required
+  compartment_id = var.compartment_id
+  name           = var.carshare_bucket_name
+  namespace      = var.bucket_namespace
 
-    #Optional
-    access_type = var.bucket_access_type
-    storage_tier = var.bucket_storage_tier
-    auto_tiering = var.bucket_auto_tiering
-    versioning = var.bucket_versioning
+  #Optional
+  access_type  = var.bucket_access_type
+  storage_tier = var.bucket_storage_tier
+  auto_tiering = var.bucket_auto_tiering
+  versioning   = var.bucket_versioning
 }
 
 # user (for carshare app)
-
-resource "oci_identity_user" "carshare-backend-user" {
-  #Required
-  compartment_id = var.tenancy
-  description = "backend user for carshare app"
-  name = "carshare-backend-user"
-  email = var.carshare_user_email
+module "carshare_backend_user" {
+  user_name        = "carshare-backend-user"
+  source       = "./modules/machine_user"
+  user_description = "backend user for carshare app"
+  group_id         = var.admin_group_id
+  public_key_path  = var.carshare_public_key_path
+  tenancy          = var.tenancy
+  user_email       = var.carshare_user_email
 }
 
-data "oci_identity_user" "carshare-backend-user" {
-  #Required
-  user_id = oci_identity_user.carshare-backend-user.id
+# user (for gitlab-runner distributed cache)
+module "gitlab_runner_user" {
+  user_name        = "gitlab-runner-user"
+  source       = "./modules/machine_user"
+  user_description = "gitlab runner user for distributed cache bucket"
+  group_id         = var.admin_group_id
+  public_key_path  = var.carshare_public_key_path
+  tenancy          = var.tenancy
+  user_email       = var.carshare_user_email
 }
 
-resource "oci_identity_api_key" "carshare-backend-user-key" {
+resource "oci_identity_customer_secret_key" "gitlab-runner-customer"{
   #Required
-  key_value = file(var.carshare_public_key_path)
-  user_id = data.oci_identity_user.carshare-backend-user.id
+  display_name = var.gitlab_runer_customer_secret_key_display_name
+  user_id = module.gitlab_runner_user.oci_identity_user_id
 }
 
-resource "oci_identity_user_group_membership" "carshare-backend-group-membership" {
+# Object storage bucket (for gitlab distributed cache)
+
+resource "oci_objectstorage_bucket" "gitlab-cache-bucket" {
   #Required
-  group_id = var.admin_group_id
-  user_id = data.oci_identity_user.carshare-backend-user.id
+  compartment_id = var.compartment_id
+  name           = var.gitlab_bucket_name
+  namespace      = var.bucket_namespace
+
+  #Optional
+  access_type  = var.bucket_access_type
+  storage_tier = var.bucket_storage_tier
+  auto_tiering = var.bucket_auto_tiering
+  versioning   = var.bucket_versioning
 }
-data "oci_identity_api_keys" "carshare-backend-user-api-keys" {
-  #Required
-  user_id = oci_identity_user.carshare-backend-user.id
-}
-# -------------------------------------

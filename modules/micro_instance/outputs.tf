@@ -17,6 +17,6 @@ output "available-images" {
   # value = data.oci_core_images.available_images.images
 }
 
-output "ws-instance" {
+output "instance" {
   value = oci_core_instance.micro_instance
 }

@@ -27,7 +27,7 @@ variable "web_server_private_ip" {}
 
 variable "gitlab_runner_private_ip" {}
 # --------------------
-variable "bucket_name" {}
+variable "carshare_bucket_name" {}
 variable "bucket_namespace" {}
 variable "bucket_access_type" {
   default = "NoPublicAccess"
@@ -44,3 +44,5 @@ variable "bucket_versioning" {
 variable "carshare_public_key_path" {}
 variable "admin_group_id" {}
 variable "carshare_user_email" {}
+variable "gitlab_bucket_name" {}
+variable "gitlab_runer_customer_secret_key_display_name" {}
