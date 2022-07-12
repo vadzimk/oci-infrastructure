@@ -11,3 +11,4 @@ crash.log
 backend-init-set.sh
 backend-init-change.sh
 import-existing.sh
+gitlab-runner/config.toml

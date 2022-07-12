@@ -1,9 +1,9 @@
-# Terraform configuration for cloud infrastructure (OCI)
+# Terraform configuration for cloud infrastructure
 
 ## Overview
 
-This configuration code automatically provisions the necessary infrastructure in my cloud using Terraform. It can run
-on a local machine or inside the Gitlab CI/CD pipeline.
+This configuration code automatically provisions (recreates) the necessary infrastructure in my cloud using Terraform. It can run on
+a local machine or inside the Gitlab CI/CD pipeline.
 
 ![Diagram of the current cloud infrastructure](./Diagram.drawio.svg "Diagram of the current limited free tier cloud infrastructure")
 
@@ -71,12 +71,20 @@ Dashboard --> User --> API keys --> Add API key
   pipeline.
 
 #### Usage
+
 - terraform validate
 - terraform init
 - terraform plan
 - terraform apply
 - terraform output -json  
- _displays the defined outputs of created resources in machine-readable format_
+  _displays the defined outputs of created resources in machine-readable format_
+- after resources are created using terraform place the gitlab-runner configuration file in the gitlab-runner `configuration path` or manually run `gitlab-runner register`
+<details><summary>
+gitlab-runner configuration path
+</summary><pre><code>
+/etc/gitlab-runner/config.toml
+</code></pre>
+</details>
 
 ### Running in Gitlab CI pipeline
 

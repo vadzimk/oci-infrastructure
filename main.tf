@@ -84,7 +84,7 @@ module "gitlab_runner" {
   image_operating_system         = var.image_operating_system
   image_operating_system_version = var.image_operating_system_version
   env_prefix                     = var.env_prefix
-  user_data_path                 = "./init-instance.sh"
+  user_data_path                 = "./init-instance-gitlab-runner.sh"
 }
 
 # Object storage bucket (for carshare app)
