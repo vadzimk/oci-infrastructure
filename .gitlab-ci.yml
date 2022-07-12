@@ -71,12 +71,3 @@ apply:
   environment:
     name: $TF_STATE
   when: manual
-
-
-
-
-
-
-
-
-
