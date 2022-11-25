@@ -73,6 +73,7 @@ apply:
   environment:
     name: $TF_STATE
   when: manual
+  allow_failure: false # this will block subsequent stages until current job succeeds
 
 register_runner:
   stage: register_gitlab_runner
@@ -85,4 +86,7 @@ register_runner:
     - scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/config.toml ubuntu@${GITLAB_RUNNER_PUBLIC_IP}:~
     - ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@${GITLAB_RUNNER_PUBLIC_IP} "sudo mv ~/config.toml /etc/gitlab-runner/;
      sudo gitlab-runner restart;"
+  when:
+    delayed:
+    start_in: 5 minutes
 
