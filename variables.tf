@@ -18,6 +18,7 @@ variable "instance_shape" {}
 variable "image_operating_system" {}
 variable "image_operating_system_version" {}
 variable "public_key_path" {}
+variable "machine_user_public_key_path" {}
 variable "web_server_private_ip" {}
 # --------------------
 
