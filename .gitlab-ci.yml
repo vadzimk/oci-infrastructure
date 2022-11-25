@@ -59,8 +59,6 @@ plan:
 apply:
   stage: deploy_infrastructure
   extends: .terraform:deploy # ==apply
-  dependencies:
-    - plan
   before_script:
     - cat "$TF_VARS" > "$(pwd)/terraform.tfvars"
     - mkdir "$(pwd)/.oci"
