@@ -12,10 +12,10 @@ output "carshare-backend-user-id" {
   sensitive = true
 }
 
-output "carshare-backend-user-id-key-fingerprint" {
-  value = module.carshare_backend_user.machine-user-id-key-fingerprint
-  sensitive = true
-}
+#output "carshare-backend-user-id-key-fingerprint" {
+#  value = module.carshare_backend_user.machine-user-id-key-fingerprint
+#  sensitive = true
+#}
 
 output "gitlab-runner-user-id" {
   value = module.gitlab_runner_user.oci_identity_user_id
