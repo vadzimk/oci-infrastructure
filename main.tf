@@ -108,7 +108,7 @@ module "carshare_backend_user" {
   source       = "./modules/machine_user"
   user_description = "backend user for carshare app"
   group_id         = var.admin_group_id
-  public_key_path  = var.carshare_public_key_path
+  public_key_path  = var.public_key_path
   tenancy          = var.tenancy
   user_email       = var.carshare_user_email
 }
@@ -119,7 +119,7 @@ module "gitlab_runner_user" {
   source       = "./modules/machine_user"
   user_description = "gitlab runner user for distributed cache bucket"
   group_id         = var.admin_group_id
-  public_key_path  = var.carshare_public_key_path
+  public_key_path  = var.public_key_path
   tenancy          = var.tenancy
   user_email       = var.carshare_user_email
 }
