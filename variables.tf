@@ -46,4 +46,4 @@ variable "bucket_versioning" {
 variable "admin_group_id" {}
 variable "carshare_user_email" {}
 variable "gitlab_bucket_name" {}
-variable "gitlab_runer_customer_secret_key_display_name" {}
+variable "gitlab_runner_customer_secret_key_display_name" {}

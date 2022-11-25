@@ -108,7 +108,7 @@ module "carshare_backend_user" {
   source       = "./modules/machine_user"
   user_description = "backend user for carshare app"
   group_id         = var.admin_group_id
-  public_key_path  = var.public_key_path
+  public_key_path  = var.machine_user_public_key_path
   tenancy          = var.tenancy
   user_email       = var.carshare_user_email
 }
@@ -119,14 +119,14 @@ module "gitlab_runner_user" {
   source       = "./modules/machine_user"
   user_description = "gitlab runner user for distributed cache bucket"
   group_id         = var.admin_group_id
-  public_key_path  = var.public_key_path
+  public_key_path  = var.machine_user_public_key_path
   tenancy          = var.tenancy
   user_email       = var.carshare_user_email
 }
 
 resource "oci_identity_customer_secret_key" "gitlab-runner-customer"{
   #Required
-  display_name = var.gitlab_runer_customer_secret_key_display_name
+  display_name = var.gitlab_runner_customer_secret_key_display_name
   user_id = module.gitlab_runner_user.oci_identity_user_id
 }
 
