@@ -56,7 +56,7 @@ module "webserver" {
   subnet_id                      = oci_core_subnet.dsubnet.id
   nsg_ids                        = [oci_core_network_security_group.webserver-nsg.id]
   private_ip                     = var.web_server_private_ip
-  public_key_path                = var.machine_user_public_key_path
+  public_key_path                = var.public_key_path # this is ssh key for the vm
   image_operating_system         = var.image_operating_system
   image_operating_system_version = var.image_operating_system_version
   env_prefix                     = var.env_prefix
@@ -80,7 +80,7 @@ module "gitlab_runner" {
     oci_core_network_security_group.gitlab-runner-nsg.id
   ]
   private_ip                     = var.gitlab_runner_private_ip
-  public_key_path                = var.machine_user_public_key_path
+  public_key_path                = var.public_key_path # this is ssh key for the vm
   image_operating_system         = var.image_operating_system
   image_operating_system_version = var.image_operating_system_version
   env_prefix                     = var.env_prefix
