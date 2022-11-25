@@ -82,7 +82,7 @@ register_runner:
     - cat $CONFIG_TOML > config.toml
     - ls -htla
     - apk add jq
-    - export $GITLAB_RUNNER_PUBLIC_IP=$(cat ter_output.json | jq -r .gitlab-runner-public_ip.value) # parses json object and returns an attribute
+    - export $GITLAB_RUNNER_PUBLIC_IP=$(cat ter_output.json | jq -r '."gitlab-runner-public_ip".value') # parses json object and returns an attribute, attribute containing dashes must be in double quotes and the argument in single quotes
   script:
     - scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/config.toml ubuntu@${GITLAB_RUNNER_PUBLIC_IP}:~
     - ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@${GITLAB_RUNNER_PUBLIC_IP} "sudo mv ~/config.toml /etc/gitlab-runner/;
