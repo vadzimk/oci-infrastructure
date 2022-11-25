@@ -74,7 +74,7 @@ Dashboard --> User --> API keys --> Add API key
 
 - terraform validate
 - terraform init
-- terraform plan
+- terraform plan, terraform plan | grep -E '#'
 - terraform apply
 - terraform output -json  
   _displays the defined outputs of created resources in machine-readable format_

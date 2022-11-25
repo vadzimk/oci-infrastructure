@@ -5,8 +5,9 @@ resource "oci_core_subnet" "dsubnet" {
   vcn_id         = oci_core_vcn.my-vcn.id
 
   #Optional
-  display_name   = "${var.env_prefix}-subnet"
+  display_name   = "${var.env_prefix}subnet"
   route_table_id = oci_core_route_table.routing-table.id
+  dns_label = "${var.env_prefix}subnet"
 }
 
 # # duplicates the optional route_table_id parameter above but allows to attach multiple

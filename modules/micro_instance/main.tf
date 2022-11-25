@@ -24,6 +24,8 @@ resource "oci_core_instance" "micro_instance" {
     private_ip = var.private_ip
     subnet_id = var.subnet_id
     nsg_ids = var.nsg_ids
+#    https://docs.oracle.com/en-us/iaas/Content/Network/Concepts/dns.htm#About
+    hostname_label = var.display_name
   }
 
   metadata = {

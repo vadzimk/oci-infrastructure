@@ -26,8 +26,8 @@ resource "oci_core_vcn" "my-vcn" {
 
   #Optional
   cidr_block   = var.vcn_cidr_block
-  display_name = "${var.env_prefix}-vcn"
-
+  display_name = "${var.env_prefix}vcn"
+  dns_label = "${var.env_prefix}vcn"
 }
 
 # Internet gateway [Resource limit 1 per vcn]

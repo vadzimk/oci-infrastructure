@@ -16,3 +16,4 @@ variable "display_name" {}
 variable "nsg_ids" {
     type = list(string)
 }
+
