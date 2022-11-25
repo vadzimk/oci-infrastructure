@@ -36,3 +36,13 @@ output "gitlab-cache-bucket-name" {
   value = oci_objectstorage_bucket.gitlab-cache-bucket.name
   sensitive = true
 }
+
+output "webserver-FQDN" {
+  value = "${module.webserver.instance.hostname_label}.${oci_core_subnet.dsubnet.dns_label}.${oci_core_vcn.my-vcn.dns_label}.oraclevcn.com"
+  sensitive = true
+}
+
+output "gitlab_runner-FQDN" {
+  value = "${module.gitlab_runner.instance.hostname_label}.${oci_core_subnet.dsubnet.dns_label}.${oci_core_vcn.my-vcn.dns_label}.oraclevcn.com"
+  sensitive = true
+}

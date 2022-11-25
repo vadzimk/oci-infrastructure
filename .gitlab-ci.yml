@@ -1,5 +1,3 @@
-# This is a multi-project pipeline
-# it will trigger downstream pipelines
 # using hints from template
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.gitlab-ci.yml
 

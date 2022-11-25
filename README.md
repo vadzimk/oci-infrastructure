@@ -82,9 +82,13 @@ Dashboard --> User --> API keys --> Add API key
 <details><summary>
 gitlab-runner configuration path
 </summary><pre><code>
-/etc/gitlab-runner/config.toml
+scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/config.toml ubuntu@gitlab-runner-ip:~
+ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@gitlab-runner-ip "sudo mv ~/config.toml /etc/gitlab-runner/; 
+sudo gitlab-runner restart;"
 </code></pre>
 </details>
+<details><summary>releasing terraform state lock in GitLab</summary><pre><code>curl -X DELETE --header "PRIVATE-TOKEN: ${my-token}" https://gitlab.com/api/v4/projects/${project-id}/terraform/state/oci-infrastructure/lock
+</code></pre></details>
 
 ### Running in Gitlab CI pipeline
 
