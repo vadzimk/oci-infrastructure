@@ -79,16 +79,36 @@ Dashboard --> User --> API keys --> Add API key
 - terraform output -json  
   _displays the defined outputs of created resources in machine-readable format_
 - after resources are created using terraform place the gitlab-runner configuration file in the gitlab-runner `configuration path` or manually run `gitlab-runner register`
-<details><summary>
-gitlab-runner configuration path
-</summary><pre><code>
-scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/config.toml ubuntu@gitlab-runner-ip:~
+
+<details>
+  <summary>
+    gitlab-runner configuration path
+  </summary>
+  <pre><code>scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/config.toml ubuntu@gitlab-runner-ip:~
 ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@gitlab-runner-ip "sudo mv ~/config.toml /etc/gitlab-runner/; 
-sudo gitlab-runner restart;"
+sudo gitlab-runner restart;"</code></pre>
+</details>
+
+<details>
+  <summary>
+    releasing terraform state lock in GitLab
+  </summary>
+  <pre><code>curl -X DELETE --header "PRIVATE-TOKEN: ${my-token}" https://gitlab.com/api/v4/projects/${project-id}/terraform/state/oci-infrastructure/lock
 </code></pre>
 </details>
-<details><summary>releasing terraform state lock in GitLab</summary><pre><code>curl -X DELETE --header "PRIVATE-TOKEN: ${my-token}" https://gitlab.com/api/v4/projects/${project-id}/terraform/state/oci-infrastructure/lock
-</code></pre></details>
+
+<details>
+  <summary>
+    deleting pre-authenticated requests of object storage bucket when bucket needs to be destroyed
+  </summary>
+  syntax in OCI CLI
+  <pre><code>oci os preauth-request delete --namespace {object_storage_namespace} --bucket-name {bucket_name} --par-id {preauthenticated_request_id}</code></pre>
+  example
+  <pre><code>oci os preauth-request delete --namespace MyNamespace --bucket-name MyParBucket --par-id YOExDlFsNYBNEwF8Uo4aK8WHiz59enVQm1aID+4cxFobgcaofVbZkg371rxK+6Vb
+Are you sure you want to delete this resource? [y/N]: y</code></pre>
+  <a href="https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/usingpreauthenticatedrequests.htm">reference docs</a>
+</details>
+
 
 ### Running in Gitlab CI pipeline
 
