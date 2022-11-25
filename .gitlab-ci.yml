@@ -69,8 +69,8 @@ apply:
   after_script:
     - gitlab-terraform output -json > ter_output.json # artifact
   artifacts:
-    reports:
-      dotenv: ter_output.json
+      paths:
+      - ter_output.json
   environment:
     name: $TF_STATE
   when: manual
