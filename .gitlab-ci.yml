@@ -86,7 +86,6 @@ register_runner:
     - scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/config.toml ubuntu@${GITLAB_RUNNER_PUBLIC_IP}:~
     - ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@${GITLAB_RUNNER_PUBLIC_IP} "sudo mv ~/config.toml /etc/gitlab-runner/;
      sudo gitlab-runner restart;"
-  when:
-    delayed:
-    start_in: 5 minutes
+  when: delayed
+  start_in: 5 minutes # allow infrastructure to be created
 
