@@ -23,6 +23,7 @@ stages:
   - validate_infrastructure_code
   - build_infrastructure_plan
   - deploy_infrastructure
+  - register_gitlab_runner
 
 validate:
   stage: validate_infrastructure_code
@@ -66,6 +67,24 @@ apply:
     - cat "$KEY_FILE" > "$(pwd)/.oci/terraform-configuration_2022-06-11T13 01 59.878Z.pem"
     - cat "$WS_KEY_PUB" > "$(pwd)/.oci/wskey.pub"
     - ls -htla
+  after_script:
+    - gitlab-terraform output -json > ter_output.json # artifact
+  artifacts:
+    reports:
+      dotenv: ter_output.json
   environment:
     name: $TF_STATE
   when: manual
+
+register_runner:
+  stage: register_gitlab_runner
+  before_script:
+    - cat $CONFIG_TOML > config.toml
+    - ls -htla
+    - apk add jq
+    - export $GITLAB_RUNNER_PUBLIC_IP=$(cat ter_output.json | jq -r .gitlab-runner-public_ip.value) # parses json object and returns an attribute
+  script:
+    - scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/config.toml ubuntu@${GITLAB_RUNNER_PUBLIC_IP}:~
+    - ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@${GITLAB_RUNNER_PUBLIC_IP} "sudo mv ~/config.toml /etc/gitlab-runner/;
+     sudo gitlab-runner restart;"
+
