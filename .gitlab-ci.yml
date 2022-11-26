@@ -94,13 +94,13 @@ register_runner:
     - ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@${GITLAB_RUNNER_PUBLIC_IP} "
       sudo gitlab-runner register \
       --non-interactive \
-      --machine-max-growth-rate 4
+      --machine-max-growth-rate 4 \
       --config ~/template-config.toml \
-      --registration-token ${GITLAB_RUNNER_REGISTRATION_TOKEN}
-      --cache-s3-server-address ${S3_SERVER_ADDRESS} # ServerAddress
-      --cache-s3-access-key ${S3_ACCESS_KEY} # AccessKey
-      --cache-s3-secret-key ${S3_SECRET_KEY} # SecretKey
-      --cache-s3-bucket-name ${S3_BUCKET_NAME} # BucketName
+      --registration-token ${GITLAB_RUNNER_REGISTRATION_TOKEN} \
+      --cache-s3-server-address ${S3_SERVER_ADDRESS}  \ # ServerAddress
+      --cache-s3-access-key ${S3_ACCESS_KEY} \ # AccessKey
+      --cache-s3-secret-key ${S3_SECRET_KEY} \ # SecretKey
+      --cache-s3-bucket-name ${S3_BUCKET_NAME} \ # BucketName
       --cache-s3-bucket-location ${S3_BUCKET_LOCATION}; # BucketLocation
       sudo gitlab-runner restart;"
   when: manual
