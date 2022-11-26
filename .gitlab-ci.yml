@@ -88,11 +88,23 @@ register_runner:
       export S3_BUCKET_NAME=$(cat ter_output.json | jq -r '."gitlab-cache-bucket-name".value') && \
       export S3_BUCKET_LOCATION=$(cat ter_output.json | jq -r '."region".value');
     - chmod 400 $WS_KEY
+    - echo $GITLAB_RUNNER_REGISTRATION_TOKEN
+    - echo $S3_SERVER_ADDRESS
+    - echo $S3_ACCESS_KEY
+    - echo $S3_SECRET_KEY
+    - echo $S3_BUCKET_NAME
+    - echo $S3_BUCKET_LOCATION
   script:
     - scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/template-config.toml ubuntu@${GITLAB_RUNNER_PUBLIC_IP}:~
     # https://docs.gitlab.com/runner/configuration/advanced-configuration.html
     # GITLAB_RUNNER_REGISTRATION_TOKEN may be replaced on each manual trigger of the job
     - ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@${GITLAB_RUNNER_PUBLIC_IP} "
+      echo $GITLAB_RUNNER_REGISTRATION_TOKEN;
+      echo $S3_SERVER_ADDRESS;
+      echo $S3_ACCESS_KEY;
+      echo $S3_SECRET_KEY;
+      echo $S3_BUCKET_NAME;
+      echo $S3_BUCKET_LOCATION;
       sudo gitlab-runner register \
       --non-interactive \
       --machine-max-growth-rate 4 \
@@ -104,5 +116,5 @@ register_runner:
       --cache-s3-bucket-name ${S3_BUCKET_NAME} \
       --cache-s3-bucket-location ${S3_BUCKET_LOCATION};
       sudo gitlab-runner restart;"
-#  when: manual
-#  allow_failure: false
+  when: manual
+  allow_failure: false
