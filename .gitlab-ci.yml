@@ -92,18 +92,18 @@ update_dns:
                  -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
                  -H "X-Auth-Key: ${CLOUDFLARE_AUTH_KEY}" \
                  -H "Content-Type: application/json" | jq -r .result | jq -r '.[0].id');
-    # update cloudflare record
+    # update cloudflare dns record
     - |
       curl --request PATCH \
         --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_IDENTIFIER}/dns_records/${DNS_RECORD_IDENTIFIER_TAG} \
         -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
         -H "X-Auth-Key: ${CLOUDFLARE_AUTH_KEY}" \
         --data "{
-        'content': '${WEBSERVER_PUBLIC_IP}',
-        'name': '${DOMAIN_NAME}',
-        'proxied': false,
-        'ttl': 3600
-      }"
+        \"content\": \"${WEBSERVER_PUBLIC_IP}\",
+        \"name\": \"${DOMAIN_NAME}\",
+        \"proxied\": false,
+        \"ttl\": 3600
+        }"
 
 
 register_runner:
