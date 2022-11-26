@@ -91,7 +91,7 @@ update_dns:
               --url "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_IDENTIFIER}/dns_records?type=A&name=${DOMAIN_NAME}" \
                  -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
                  -H "X-Auth-Key: ${CLOUDFLARE_AUTH_KEY}" \
-                 -H "Content-Type: application/json" | jq -r .result | jq --slurp '.[0]' | jq .id);
+                 -H "Content-Type: application/json" | jq -r .result | jq -r '.[0].id');
     # update cloudflare record
     - |
       curl --request PATCH \
