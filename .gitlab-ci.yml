@@ -87,6 +87,7 @@ register_runner:
       export S3_SECRET_KEY=$(cat ter_output.json | jq -r '."gitlab_runner_customer_secret_key_value".value') && \
       export S3_BUCKET_NAME=$(cat ter_output.json | jq -r '."gitlab-cache-bucket-name".value')
       export S3_BUCKET_LOCATION=$(cat ter_output.json | jq -r '."region".value');
+    - chmod 400 $WS_KEY
   script:
     - scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/template-config.toml ubuntu@${GITLAB_RUNNER_PUBLIC_IP}:~
     # https://docs.gitlab.com/runner/configuration/advanced-configuration.html
@@ -104,4 +105,4 @@ register_runner:
       --cache-s3-bucket-location ${S3_BUCKET_LOCATION};
       sudo gitlab-runner restart;"
   when: manual
-
+  allow_failure: false
