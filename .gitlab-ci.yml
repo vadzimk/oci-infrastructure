@@ -96,7 +96,7 @@ register_runner:
       ls -htla;
       sudo gitlab-runner register \
       --non-interactive \
-      --url 'https://gitlab.com' \
+      --url 'https://gitlab.com/' \
       --machine-max-growth-rate 4 \
       --config '/etc/gitlab-runner/config.toml'
       --template-config '/home/ubuntu/template-config.toml' \
