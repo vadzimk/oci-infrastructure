@@ -4,6 +4,8 @@ data "oci_objectstorage_namespace" "tenancy-details-namespace" {
   compartment_id = var.compartment_id
 }
 
-data "oci_identity_regions" "tenancy-regions" {
-}
 
+data "oci_identity_region_subscriptions" "tenancy-regions" {
+  #Required
+  tenancy_id = var.tenancy
+}

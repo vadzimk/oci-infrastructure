@@ -49,7 +49,7 @@ output "gitlab_runner-FQDN" {
 
 locals {
   namespace =data.oci_objectstorage_namespace.tenancy-details-namespace.namespace
-  region = data.oci_identity_regions.tenancy-regions.regions[0].name
+  region = data.oci_identity_region_subscriptions.tenancy-regions.region_subscriptions[0].region_name
 }
 
 output "region" {
