@@ -46,3 +46,17 @@ output "gitlab_runner-FQDN" {
   value = "${module.gitlab_runner.instance.hostname_label}.${oci_core_subnet.dsubnet.dns_label}.${oci_core_vcn.my-vcn.dns_label}.oraclevcn.com"
   sensitive = true
 }
+
+locals {
+  namespace =data.oci_objectstorage_namespace.tenancy-details-namespace.namespace
+  region = data.oci_identity_regions.tenancy-regions.regions[0].name
+}
+
+output "region" {
+  value = local.region
+}
+
+output "S3-ServerAddress" {
+  value = "${local.namespace}.compat.objectstorage.${local.region}.oraclecloud.com"
+  sensitive = true
+}

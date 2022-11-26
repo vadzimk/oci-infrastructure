@@ -79,14 +79,28 @@ apply:
 register_runner:
   stage: register_gitlab_runner
   before_script:
-    - cat $CONFIG_TOML > config.toml
     - ls -htla
     - apk add jq
-    - export $GITLAB_RUNNER_PUBLIC_IP=$(cat ter_output.json | jq -r '."gitlab-runner-public_ip".value') # parses json object and returns an attribute, attribute containing dashes must be in double quotes and the argument in single quotes
+    - export GITLAB_RUNNER_PUBLIC_IP=$(cat ter_output.json | jq -r '."gitlab-runner-public_ip".value') # parses json object and returns an attribute, attribute containing dashes must be in double quotes and the argument in single quotes
+    - export S3_SERVER_ADDRESS=$(cat ter_output.json | jq -r '."S3-ServerAddress".value') && \ 
+      export S3_ACCESS_KEY=$(cat ter_output.json | jq -r '."gitlab_runner_customer_secret_key_id".value') && \
+      export S3_SECRET_KEY=$(cat ter_output.json | jq -r '."gitlab_runner_customer_secret_key_value".value') && \
+      export S3_BUCKET_NAME=$(cat ter_output.json | jq -r '."gitlab-cache-bucket-name".value')
+      export S3_BUCKET_LOCATION=$(cat ter_output.json | jq -r '."region".value');
   script:
-    - scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/config.toml ubuntu@${GITLAB_RUNNER_PUBLIC_IP}:~
-    - ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@${GITLAB_RUNNER_PUBLIC_IP} "sudo mv ~/config.toml /etc/gitlab-runner/;
-     sudo gitlab-runner restart;"
-  when: delayed
-  start_in: 5 minutes # allow infrastructure to be created
+    - scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/template-config.toml ubuntu@${GITLAB_RUNNER_PUBLIC_IP}:~
+    # https://docs.gitlab.com/runner/configuration/advanced-configuration.html
+    - ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@${GITLAB_RUNNER_PUBLIC_IP} "
+      sudo gitlab-runner register \
+      --non-interactive \
+      --machine-max-growth-rate 4
+      --config ~/template-config.toml \
+      --registration-token ${GITLAB_RUNNER_REGISTRATION_TOKEN} # TODO this must be set for each registration manually in the GitLab UI
+      --cache-s3-server-address ${S3_SERVER_ADDRESS} # ServerAddress
+      --cache-s3-access-key ${S3_ACCESS_KEY} # AccessKey
+      --cache-s3-secret-key ${S3_SECRET_KEY} # SecretKey
+      --cache-s3-bucket-name ${S3_BUCKET_NAME} # BucketName
+      --cache-s3-bucket-location ${S3_BUCKET_LOCATION}; # BucketLocation
+      sudo gitlab-runner restart;"
+  when: manual
 
