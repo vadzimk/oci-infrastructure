@@ -96,10 +96,10 @@ register_runner:
       ls -htla;
       sudo gitlab-runner register \
       --non-interactive \
+      --url 'https://gitlab.com' \
       --machine-max-growth-rate 4 \
       --config /etc/gitlab-runner/config.toml
       --template-config /home/ubuntu/template-config.toml \
-      --url https://gitlab.com \
       --registration-token ${GITLAB_RUNNER_REGISTRATION_TOKEN} \
       --cache-s3-server-address ${S3_SERVER_ADDRESS} \
       --cache-s3-access-key ${S3_ACCESS_KEY} \
