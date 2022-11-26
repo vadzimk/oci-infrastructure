@@ -90,12 +90,13 @@ register_runner:
   script:
     - scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/template-config.toml ubuntu@${GITLAB_RUNNER_PUBLIC_IP}:~
     # https://docs.gitlab.com/runner/configuration/advanced-configuration.html
+    # GITLAB_RUNNER_REGISTRATION_TOKEN may be replaced on each manual trigger of the job
     - ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@${GITLAB_RUNNER_PUBLIC_IP} "
       sudo gitlab-runner register \
       --non-interactive \
       --machine-max-growth-rate 4
       --config ~/template-config.toml \
-      --registration-token ${GITLAB_RUNNER_REGISTRATION_TOKEN} # TODO this must be set for each registration manually in the GitLab UI
+      --registration-token ${GITLAB_RUNNER_REGISTRATION_TOKEN}
       --cache-s3-server-address ${S3_SERVER_ADDRESS} # ServerAddress
       --cache-s3-access-key ${S3_ACCESS_KEY} # AccessKey
       --cache-s3-secret-key ${S3_SECRET_KEY} # SecretKey
