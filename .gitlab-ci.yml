@@ -87,12 +87,11 @@ update_dns:
   script:
     - WEBSERVER_PUBLIC_IP=$(cat ter_output.json | jq -r '."webserver-public_ip".value')
     - |
-      curl --request GET \
+      DNS_RECORD_IDENTIFIER_TAG = $(curl --request GET \
               --url "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_IDENTIFIER}/dns_records?type=A&name=${DOMAIN_NAME}" \
                  -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
                  -H "X-Auth-Key: ${CLOUDFLARE_AUTH_KEY}" \
-                 -H "Content-Type: application/json" > dns_records.json;
-      DNS_RECORD_IDENTIFIER_TAG = $(dns_records.json | jq -r .result | jq --slurp '.[0]' | jq .id);
+                 -H "Content-Type: application/json" | jq -r .result | jq --slurp '.[0]' | jq .id);
     # update cloudflare record
     - |
       curl --request PATCH \
