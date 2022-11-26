@@ -85,9 +85,9 @@ update_dns:
   before_script:
     - apk add jq
   script:
-    - WEBSERVER_PUBLIC_IP=$(cat ter_output.json | jq -r '."webserver-public_ip".value')
+    - export WEBSERVER_PUBLIC_IP=$(cat ter_output.json | jq -r '."webserver-public_ip".value')
     - |
-      DNS_RECORD_IDENTIFIER_TAG = $(curl --request GET \
+      export DNS_RECORD_IDENTIFIER_TAG = $(curl --request GET \
               --url "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_IDENTIFIER}/dns_records?type=A&name=${DOMAIN_NAME}" \
                  -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
                  -H "X-Auth-Key: ${CLOUDFLARE_AUTH_KEY}" \
