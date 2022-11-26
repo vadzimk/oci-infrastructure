@@ -115,7 +115,7 @@ register_runner:
       --cache-s3-access-key ${S3_ACCESS_KEY} \
       --cache-s3-secret-key ${S3_SECRET_KEY} \
       --cache-s3-bucket-name ${S3_BUCKET_NAME} \
-      --cache-s3-bucket-location ${S3_BUCKET_LOCATION};
+      --cache-s3-bucket-location ${S3_BUCKET_LOCATION} && \
       sudo gitlab-runner restart;"
   when: manual
   allow_failure: false
