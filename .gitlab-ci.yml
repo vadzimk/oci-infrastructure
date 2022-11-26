@@ -105,6 +105,7 @@ register_runner:
       echo $S3_SECRET_KEY;
       echo $S3_BUCKET_NAME;
       echo $S3_BUCKET_LOCATION;
+      ls -htla 
       sudo gitlab-runner register \
       --non-interactive \
       --machine-max-growth-rate 4 \
