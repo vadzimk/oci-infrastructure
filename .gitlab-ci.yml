@@ -76,6 +76,37 @@ apply:
   when: manual
   allow_failure: false # this will block subsequent stages until current job succeeds
 
+update_dns:
+  stage: deploy_infrastructure
+  needs:
+    - apply
+  variables:
+    DOMAIN_NAME: "vadzimk.com"
+  before_script:
+    - apk add jq
+  script:
+    - WEBSERVER_PUBLIC_IP=$(cat ter_output.json | jq -r '."webserver-public_ip".value')
+    - |
+      curl --request GET \
+              --url "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_IDENTIFIER}/dns_records?type=A&name=${DOMAIN_NAME}" \
+                 -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
+                 -H "X-Auth-Key: ${CLOUDFLARE_AUTH_KEY}" \
+                 -H "Content-Type: application/json" > dns_records.json;
+      DNS_RECORD_IDENTIFIER_TAG = $(dns_records.json | jq -r .result | jq --slurp '.[0]' | jq .id);
+    # update cloudflare record
+    - |
+      curl --request PATCH \
+        --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_IDENTIFIER}/dns_records/${DNS_RECORD_IDENTIFIER_TAG} \
+        -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
+        -H "X-Auth-Key: ${CLOUDFLARE_AUTH_KEY}" \
+        --data "{
+        'content': '${WEBSERVER_PUBLIC_IP}',
+        'name': '${DOMAIN_NAME}',
+        'proxied': false,
+        'ttl': 3600
+      }"
+
+
 register_runner:
   stage: register_gitlab_runner
   before_script:
