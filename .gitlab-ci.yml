@@ -88,29 +88,18 @@ register_runner:
     - export S3_BUCKET_NAME=$(cat ter_output.json | jq -r '."gitlab-cache-bucket-name".value')
     - export S3_BUCKET_LOCATION=$(cat ter_output.json | jq -r '."region".value')
     - chmod 400 $WS_KEY
-    - echo $GITLAB_RUNNER_REGISTRATION_TOKEN
-    - echo $S3_SERVER_ADDRESS
-    - echo $S3_ACCESS_KEY
-    - echo $S3_SECRET_KEY
-    - echo $S3_BUCKET_NAME
-    - echo $S3_BUCKET_LOCATION
   script:
     - scp -o StrictHostKeyChecking=no -i ${WS_KEY} ./gitlab-runner/template-config.toml ubuntu@${GITLAB_RUNNER_PUBLIC_IP}:~
     # https://docs.gitlab.com/runner/configuration/advanced-configuration.html
     # GITLAB_RUNNER_REGISTRATION_TOKEN may be replaced on each manual trigger of the job
     - ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@${GITLAB_RUNNER_PUBLIC_IP} "
-      echo GITLAB_RUNNER_REGISTRATION_TOKEN=$GITLAB_RUNNER_REGISTRATION_TOKEN;
-      echo S3_SERVER_ADDRESS=$S3_SERVER_ADDRESS;
-      echo S3_ACCESS_KEY=$S3_ACCESS_KEY;
-      echo S3_SECRET_KEY=$S3_SECRET_KEY;
-      echo S3_BUCKET_NAME=$S3_BUCKET_NAME;
-      echo S3_BUCKET_LOCATION=$S3_BUCKET_LOCATION;
       ls -htla;
       sudo gitlab-runner register \
       --non-interactive \
       --machine-max-growth-rate 4 \
       --config /etc/gitlab-runner/config.toml
       --template-config /home/ubuntu/template-config.toml \
+      --url https://gitlab.com \
       --registration-token ${GITLAB_RUNNER_REGISTRATION_TOKEN} \
       --cache-s3-server-address ${S3_SERVER_ADDRESS} \
       --cache-s3-access-key ${S3_ACCESS_KEY} \
