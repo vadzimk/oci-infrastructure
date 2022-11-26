@@ -81,12 +81,12 @@ register_runner:
   before_script:
     - ls -htla
     - apk add jq
-    - export GITLAB_RUNNER_PUBLIC_IP=$(cat ter_output.json | jq -r '."gitlab-runner-public_ip".value') # parses json object and returns an attribute, attribute containing dashes must be in double quotes and the argument in single quotes
-    - export S3_SERVER_ADDRESS=$(cat ter_output.json | jq -r '."S3-ServerAddress".value') && \ 
-      export S3_ACCESS_KEY=$(cat ter_output.json | jq -r '."gitlab_runner_customer_secret_key_id".value') && \
-      export S3_SECRET_KEY=$(cat ter_output.json | jq -r '."gitlab_runner_customer_secret_key_value".value') && \
-      export S3_BUCKET_NAME=$(cat ter_output.json | jq -r '."gitlab-cache-bucket-name".value') && \
-      export S3_BUCKET_LOCATION=$(cat ter_output.json | jq -r '."region".value');
+    - export GITLAB_RUNNER_PUBLIC_IP=$(cat ter_output.json | jq -r '."gitlab-runner-public_ip".value')
+    - export S3_SERVER_ADDRESS=$(cat ter_output.json | jq -r '."S3-ServerAddress".value')
+    - export S3_ACCESS_KEY=$(cat ter_output.json | jq -r '."gitlab_runner_customer_secret_key_id".value')
+    - export S3_SECRET_KEY=$(cat ter_output.json | jq -r '."gitlab_runner_customer_secret_key_value".value')
+    - export S3_BUCKET_NAME=$(cat ter_output.json | jq -r '."gitlab-cache-bucket-name".value')
+    - export S3_BUCKET_LOCATION=$(cat ter_output.json | jq -r '."region".value')
     - chmod 400 $WS_KEY
     - echo $GITLAB_RUNNER_REGISTRATION_TOKEN
     - echo $S3_SERVER_ADDRESS
@@ -99,17 +99,17 @@ register_runner:
     # https://docs.gitlab.com/runner/configuration/advanced-configuration.html
     # GITLAB_RUNNER_REGISTRATION_TOKEN may be replaced on each manual trigger of the job
     - ssh -o StrictHostKeyChecking=no -i ${WS_KEY} ubuntu@${GITLAB_RUNNER_PUBLIC_IP} "
-      echo $GITLAB_RUNNER_REGISTRATION_TOKEN;
-      echo $S3_SERVER_ADDRESS;
-      echo $S3_ACCESS_KEY;
-      echo $S3_SECRET_KEY;
-      echo $S3_BUCKET_NAME;
-      echo $S3_BUCKET_LOCATION;
+      echo GITLAB_RUNNER_REGISTRATION_TOKEN=$GITLAB_RUNNER_REGISTRATION_TOKEN;
+      echo S3_SERVER_ADDRESS=$S3_SERVER_ADDRESS;
+      echo S3_ACCESS_KEY=$S3_ACCESS_KEY;
+      echo S3_SECRET_KEY=$S3_SECRET_KEY;
+      echo S3_BUCKET_NAME=$S3_BUCKET_NAME;
+      echo S3_BUCKET_LOCATION=$S3_BUCKET_LOCATION;
       ls -htla;
       sudo gitlab-runner register \
       --non-interactive \
       --machine-max-growth-rate 4 \
-      --template-config ~/template-config.toml \
+      --template-config template-config.toml \
       --registration-token ${GITLAB_RUNNER_REGISTRATION_TOKEN} \
       --cache-s3-server-address ${S3_SERVER_ADDRESS} \
       --cache-s3-access-key ${S3_ACCESS_KEY} \
