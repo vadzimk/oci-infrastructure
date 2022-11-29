@@ -7,6 +7,15 @@ output "gitlab-runner-public_ip" {
   sensitive = true
 }
 
+output "webserver-private_ip" {
+  value = module.webserver.instance.private_ip
+  sensitive = true
+}
+output "gitlab-runner-private_ip" {
+  value = module.gitlab_runner.instance.private_ip
+  sensitive = true
+}
+
 output "carshare-backend-user-id" {
   value = module.carshare_backend_user.oci_identity_user_id
   sensitive = true
