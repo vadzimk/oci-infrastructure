@@ -151,7 +151,8 @@ resource "oci_core_network_security_group_security_rule" "strapi-rule" {
 
   #Optional
   description = "Allow access to strapi via 1338"
-  source      = "${module.gitlab_runner.instance.public_ip}/32" # CIDR block consisting of just one address
+#  source      = "${module.gitlab_runner.instance.public_ip}/32" # CIDR block consisting of just one address
+  source      = "0.0.0.0/0" # CIDR block consisting of just one address
   source_type = "CIDR_BLOCK"
   tcp_options {
     #Optional
