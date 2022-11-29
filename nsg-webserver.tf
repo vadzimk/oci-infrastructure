@@ -139,3 +139,27 @@ resource "oci_core_network_security_group_security_rule" "egress-rule" {
   destination      = "0.0.0.0/0"
   destination_type = "CIDR_BLOCK"
 }
+
+
+# strapi_cms rule
+
+resource "oci_core_network_security_group_security_rule" "strapi-rule" {
+  #Required
+  network_security_group_id = oci_core_network_security_group.webserver-nsg.id
+  direction                 = "INGRESS"
+  protocol                  = "6" # TCP protocol
+
+  #Optional
+  description = "Allow access to strapi via 1338"
+  source      =  module.gitlab_runner.instance.public_ip # CIDR block consisting of just one address
+  source_type = "CIDR_BLOCK"
+  tcp_options {
+    #Optional
+    destination_port_range {
+      #Required
+      max = "1338"
+      min = "1338"
+    }
+
+  }
+}
