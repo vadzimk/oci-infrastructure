@@ -21,10 +21,10 @@ output "carshare-backend-user-id" {
   sensitive = true
 }
 
-#output "carshare-backend-user-id-key-fingerprint" {
-#  value = module.carshare_backend_user.machine-user-id-key-fingerprint
-#  sensitive = true
-#}
+output "carshare-backend-user-id-key-fingerprint" {
+  value = module.carshare_backend_user.machine-user-id-key-fingerprint
+  sensitive = true
+}
 
 output "gitlab-runner-user-id" {
   value = module.gitlab_runner_user.oci_identity_user_id
@@ -43,6 +43,11 @@ output "gitlab_runner_customer_secret_key_value" {
 
 output "gitlab-cache-bucket-name" {
   value = oci_objectstorage_bucket.gitlab-cache-bucket.name
+  sensitive = true
+}
+
+output "db-backup-bucket-name" {
+  value = oci_objectstorage_bucket.db-backup-bucket.name
   sensitive = true
 }
 

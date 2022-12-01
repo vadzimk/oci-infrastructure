@@ -43,6 +43,22 @@ variable "bucket_versioning" {
   default = "Disabled"
 }
 
+# ----------------------------
+variable "db_backup_bucket_name" {}
+variable "db_bucket_namespace" {}
+variable "db_bucket_access_type" {
+  default = "NoPublicAccess"
+}
+variable "db_bucket_storage_tier" {
+  default = "Standard"
+}
+variable "db_bucket_auto_tiering" {
+  default = "Disabled"
+}
+variable "db_bucket_versioning" {
+  default = "Disabled"
+}
+
 variable "admin_group_id" {}
 variable "carshare_user_email" {}
 variable "gitlab_bucket_name" {}

@@ -102,6 +102,21 @@ resource "oci_objectstorage_bucket" "image-bucket" {
   versioning   = var.bucket_versioning
 }
 
+# Object storage bucket for database backups
+
+resource "oci_objectstorage_bucket" "db-backup-bucket" {
+  #Required
+  compartment_id = var.compartment_id
+  name           = var.db_backup_bucket_name
+  namespace      = var.db_bucket_namespace
+
+  #Optional
+  access_type  = var.db_bucket_access_type
+  storage_tier = var.db_bucket_storage_tier
+  auto_tiering = var.db_bucket_auto_tiering
+  versioning   = var.db_bucket_versioning
+}
+
 # user (for carshare app)
 module "carshare_backend_user" {
   user_name        = "carshare-backend-user"
