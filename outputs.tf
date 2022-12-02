@@ -70,6 +70,10 @@ output "region" {
   value = local.region
 }
 
+output "namespace" {
+  value = local.namespace
+}
+
 output "S3-ServerAddress" {
   value = "${local.namespace}.compat.objectstorage.${local.region}.oraclecloud.com"
   sensitive = true
