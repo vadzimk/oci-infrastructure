@@ -21,13 +21,19 @@ output "carshare-backend-user-id" {
   sensitive = true
 }
 
+# TODO remove this (already replaced)
 #output "carshare-backend-user-id-key-fingerprint" {
 #  value = module.carshare_backend_user.machine-user-id-key-fingerprint
 #  sensitive = true
 #}
 
-output "carshare-backend-user-api-keys" {
-  value = module.carshare_backend_user.machine-user-api-keys
+output "carshare-backend-user-api-keys-first-fingerprint" {
+  value = module.carshare_backend_user.machine-user-api-keys[0].fingerprint
+  sensitive = true
+}
+
+output "pgbackups_user-api-keys-first-fingerprint" {
+  value = module.pgbackups_user.machine-user-api-keys[0].fingerprint
   sensitive = true
 }
 
