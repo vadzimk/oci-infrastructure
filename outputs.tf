@@ -21,8 +21,13 @@ output "carshare-backend-user-id" {
   sensitive = true
 }
 
-output "carshare-backend-user-id-key-fingerprint" {
-  value = module.carshare_backend_user.machine-user-id-key-fingerprint
+#output "carshare-backend-user-id-key-fingerprint" {
+#  value = module.carshare_backend_user.machine-user-id-key-fingerprint
+#  sensitive = true
+#}
+
+output "carshare-backend-user-api-keys" {
+  value = module.carshare_backend_user.machine-user-api-keys
   sensitive = true
 }
 
