@@ -27,7 +27,7 @@ resource "oci_core_vcn" "my-vcn" {
   #Optional
   cidr_block   = var.vcn_cidr_block
   display_name = "${var.env_prefix}vcn"
-  dns_label = "${var.env_prefix}vcn"
+  dns_label    = "${var.env_prefix}vcn"
 }
 
 # Internet gateway [Resource limit 1 per vcn]
@@ -120,7 +120,7 @@ resource "oci_objectstorage_bucket" "db-backup-bucket" {
 # user (for carshare app)
 module "carshare_backend_user" {
   user_name        = "carshare-backend-user"
-  source       = "./modules/machine_user"
+  source           = "./modules/machine_user"
   user_description = "backend user for carshare app"
   group_id         = var.admin_group_id
   public_key_path  = var.machine_user_public_key_path
@@ -131,18 +131,29 @@ module "carshare_backend_user" {
 # user (for gitlab-runner distributed cache)
 module "gitlab_runner_user" {
   user_name        = "gitlab-runner-user"
-  source       = "./modules/machine_user"
+  source           = "./modules/machine_user"
   user_description = "gitlab runner user for distributed cache bucket"
   group_id         = var.admin_group_id
-  public_key_path  = var.machine_user_public_key_path
+  public_key_path  = var.gitlab_user_public_key_path
   tenancy          = var.tenancy
   user_email       = var.carshare_user_email
 }
 
-resource "oci_identity_customer_secret_key" "gitlab-runner-customer"{
+# user (for database backups)
+module "pgbackups_user" {
+  user_name        = "pgbackups-user"
+  source           = "./modules/machine_user"
+  user_description = "pgbackups user for db backups bucket"
+  group_id         = var.admin_group_id # TODO assign it to another group that only has access to the bucket
+  public_key_path  = var.pgbackups_user_public_key_path
+  tenancy          = var.tenancy
+  user_email       = var.carshare_user_email
+}
+
+resource "oci_identity_customer_secret_key" "gitlab-runner-customer" {
   #Required
   display_name = var.gitlab_runner_customer_secret_key_display_name
-  user_id = module.gitlab_runner_user.oci_identity_user_id
+  user_id      = module.gitlab_runner_user.oci_identity_user_id
 }
 
 # Object storage bucket (for gitlab distributed cache)

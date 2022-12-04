@@ -26,7 +26,7 @@ variable "web_server_private_ip" {}
 #variable "nametag" {}
 #variable "internet_gateway_id" {}
 
-variable "gitlab_runner_private_ip" {}
+
 # --------------------
 variable "carshare_bucket_name" {}
 variable "bucket_namespace" {}
@@ -44,6 +44,7 @@ variable "bucket_versioning" {
 }
 
 # ----------------------------
+variable "pgbackups_user_public_key_path" {}
 variable "db_backup_bucket_name" {}
 variable "db_bucket_namespace" {}
 variable "db_bucket_access_type" {
@@ -59,6 +60,8 @@ variable "db_bucket_versioning" {
   default = "Disabled"
 }
 
+variable "gitlab_runner_private_ip" {}
+variable "gitlab_user_public_key_path" {}
 variable "admin_group_id" {}
 variable "carshare_user_email" {}
 variable "gitlab_bucket_name" {}
