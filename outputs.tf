@@ -16,16 +16,15 @@ output "gitlab-runner-private_ip" {
   sensitive = true
 }
 
+output "pgbackups_user-id" {
+  value = module.pgbackups_user.oci_identity_user_id
+  sensitive = true
+}
+
 output "carshare-backend-user-id" {
   value = module.carshare_backend_user.oci_identity_user_id
   sensitive = true
 }
-
-# TODO remove this (already replaced)
-#output "carshare-backend-user-id-key-fingerprint" {
-#  value = module.carshare_backend_user.machine-user-id-key-fingerprint
-#  sensitive = true
-#}
 
 output "carshare-backend-user-api-keys-first-fingerprint" {
   value = module.carshare_backend_user.machine-user-api-keys[0].fingerprint

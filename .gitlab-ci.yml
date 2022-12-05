@@ -140,4 +140,4 @@ register_runner:
       --cache-s3-bucket-location ${S3_BUCKET_LOCATION} && \
       sudo gitlab-runner restart;"
   when: manual
-  allow_failure: false
+  allow_failure: true # this is an optional job and the pipeline needs to declare success regardless of triggering this job in order to provide artifacts of the apply job to other projects pipelines
