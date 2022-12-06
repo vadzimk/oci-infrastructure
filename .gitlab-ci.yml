@@ -89,14 +89,13 @@ update_dns:
   script:
     - export WEBSERVER_PUBLIC_IP=$(cat ter_output.json | jq -r '."webserver-public_ip".value')
     - |
-      export DNS_RECORD_IDENTIFIER_TAG=$(curl --request GET \
-              --url "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_IDENTIFIER}/dns_records?type=A&name=${DOMAIN_NAME}" \
-                 -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
-                 -H "X-Auth-Key: ${CLOUDFLARE_AUTH_KEY}" \
-                 -H "Content-Type: application/json" | jq -r .result | jq -r '.[0].id');
-    # update cloudflare dns record
-    - | 
-      for entry in "*.$DOMAIN_NAME" "$DOMAIN_NAME" ; do
+      for entry in "*" "$DOMAIN_NAME" ; do
+        DNS_RECORD_IDENTIFIER_TAG=$(curl --request GET \
+                --url "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_IDENTIFIER}/dns_records?type=A&name=${entry}" \
+                   -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
+                   -H "X-Auth-Key: ${CLOUDFLARE_AUTH_KEY}" \
+                   -H "Content-Type: application/json" | jq -r .result | jq -r '.[0].id');
+        echo -e "\nDNS_RECORD_IDENTIFIER_TAG=$DNS_RECORD_IDENTIFIER_TAG";
         echo "Updating $entry ip $WEBSERVER_PUBLIC_IP";
         curl --request PUT \
         --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_IDENTIFIER}/dns_records/${DNS_RECORD_IDENTIFIER_TAG} \
@@ -109,7 +108,7 @@ update_dns:
         \"ttl\": 3600,
         \"proxied\": false
         }";
-      echo -e "\n";
+        echo -e "\n";
       done;
 
 
