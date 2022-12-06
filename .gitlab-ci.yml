@@ -97,6 +97,7 @@ update_dns:
     # update cloudflare dns record
     - | 
       for entry in "$DOMAIN_NAME" "*"; do
+        echo "Updating $entry ip $WEBSERVER_PUBLIC_IP";
         curl --request PUT \
         --url https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_IDENTIFIER}/dns_records/${DNS_RECORD_IDENTIFIER_TAG} \
         -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
