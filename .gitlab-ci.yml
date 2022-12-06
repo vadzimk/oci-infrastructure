@@ -108,7 +108,8 @@ update_dns:
         \"content\": \"${WEBSERVER_PUBLIC_IP}\",
         \"ttl\": 3600,
         \"proxied\": false
-        }"
+        }";
+      echo -e "\n";
       done;
 
 
