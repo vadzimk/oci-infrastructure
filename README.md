@@ -74,6 +74,7 @@ Dashboard --> User --> API keys --> Add API key
 
 - terraform validate
 - terraform init
+- terraform force-unlock LOCK_ID  
 - terraform plan, terraform plan | grep -E '#'
 - terraform apply
 - terraform output -json  
