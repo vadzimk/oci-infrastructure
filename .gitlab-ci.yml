@@ -67,6 +67,7 @@ apply:
     - cat "$WS_KEY_PUB" > "$(pwd)/.oci/wskey.pub"
     - cat "$MACHINE_USER_KEY_PUB" > "$(pwd)/.oci/machine_user_key.pub.pem"
     - cat "$PGBACKUPS_USER_KEY_PUB" > "$(pwd)/.oci/pgbackups_user_key.pub.pem"
+    - cat "$STRAPI_USER_KEY_PUB" > "$(pwd)/.oci/strapi_user_key.pub.pem"
     - ls -htla
   after_script:
     - gitlab-terraform output -json > ter_output.json # artifact

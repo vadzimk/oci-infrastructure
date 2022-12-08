@@ -115,3 +115,11 @@ Are you sure you want to delete this resource? [y/N]: y</code></pre>
 Changes pushed to this repository's `*.tf` or `*.sh` files trigger the Gitlab CI pipeline with a manual deploy step that
 applies the Terraform configuration changes to the cloud.  
 ***Project—>Settings—>CI/CD—>Variables*** must have a secret `TF_VARS` with the contents of `terraform.tfvars`
+
+
+To generate Private key:  
+`openssl genrsa -out ~/.oci/oci_api_key.pem 2048`  
+`chmod go-rwx ~/.oci/oci_api_key.pem`  
+
+To generate Public key:  
+`openssl rsa -pubout -in ~/.oci/oci_api_key.pem -out ~/.oci/oci_api_key_public.pem`
