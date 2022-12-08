@@ -12,6 +12,7 @@ resource "oci_identity_user" "machine-user" {
   compartment_id = var.tenancy
   description    = var.user_description
   name           = var.user_name
+  email          = var.machine_user_email
 }
 
 resource "oci_identity_api_key" "machine-user-key" {

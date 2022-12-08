@@ -19,6 +19,7 @@ variable "image_operating_system" {}
 variable "image_operating_system_version" {}
 variable "public_key_path" {}
 variable "machine_user_public_key_path" {}
+variable "machine_user_email" {}
 variable "web_server_private_ip" {}
 # --------------------
 

@@ -125,6 +125,8 @@ module "carshare_backend_user" {
   group_id         = var.admin_group_id
   public_key_path  = var.machine_user_public_key_path
   tenancy          = var.tenancy
+  machine_user_email = var.machine_user_email
+
 }
 
 # user (for gitlab-runner distributed cache)
@@ -135,6 +137,8 @@ module "gitlab_runner_user" {
   group_id         = var.admin_group_id
   public_key_path  = var.gitlab_user_public_key_path
   tenancy          = var.tenancy
+  machine_user_email = var.machine_user_email
+
 }
 resource "oci_identity_customer_secret_key" "gitlab-runner-customer" {
   #Required
@@ -150,6 +154,8 @@ module "pgbackups_user" {
   group_id         = var.admin_group_id # TODO assign it to another group that only has access to the bucket
   public_key_path  = var.pgbackups_user_public_key_path
   tenancy          = var.tenancy
+  machine_user_email = var.machine_user_email
+
 }
 
 # user (for strapi cms) needs these policy actions https://www.npmjs.com/package/@strapi/provider-upload-aws-s3
@@ -167,6 +173,7 @@ module "strapi_user" {
   group_id         = var.admin_group_id # TODO assign it to another group that only has access to the bucket
   public_key_path  = var.strapi_user_public_key_path
   tenancy          = var.tenancy
+  machine_user_email = var.machine_user_email
 }
 
 resource "oci_identity_customer_secret_key" "strapi-user-customer" {
