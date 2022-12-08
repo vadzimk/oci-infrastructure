@@ -66,3 +66,19 @@ variable "admin_group_id" {}
 variable "carshare_user_email" {}
 variable "gitlab_bucket_name" {}
 variable "gitlab_runner_customer_secret_key_display_name" {}
+variable "strapi_customer_secret_key_display_name" {}
+
+variable "strapi_user_public_key_path" {}
+variable "strapi_media_bucket_name" {}
+variable "strapi_media_bucket_access_type" {
+  default = "NoPublicAccess"
+}
+variable "strapi_media_bucket_storage_tier" {
+  default = "Standard"
+}
+variable "strapi_media_bucket_auto_tiering" {
+  default = "Disabled"
+}
+variable "strapi_media_bucket_versioning" {
+  default = "Disabled"
+}

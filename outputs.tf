@@ -50,6 +50,20 @@ output "gitlab_runner_customer_secret_key_value" {
   value = oci_identity_customer_secret_key.gitlab-runner-customer.key
   sensitive = true
 }
+output "strapi_user_customer_secret_key_id" {
+  value = oci_identity_customer_secret_key.strapi-user-customer.id
+  sensitive = true
+}
+
+output "strapi_user_customer_secret_key_value" {
+  value = oci_identity_customer_secret_key.strapi-user-customer.key
+  sensitive = true
+}
+
+output "strapi-media-bucket-name" {
+  value = oci_objectstorage_bucket.strapi-media-bucket.name
+  sensitive = true
+}
 
 output "gitlab-cache-bucket-name" {
   value = oci_objectstorage_bucket.gitlab-cache-bucket.name
