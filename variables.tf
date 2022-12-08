@@ -64,7 +64,7 @@ variable "db_bucket_versioning" {
 variable "gitlab_runner_private_ip" {}
 variable "gitlab_user_public_key_path" {}
 variable "admin_group_id" {}
-variable "carshare_user_email" {}
+
 variable "gitlab_bucket_name" {}
 variable "gitlab_runner_customer_secret_key_display_name" {}
 variable "strapi_customer_secret_key_display_name" {}
